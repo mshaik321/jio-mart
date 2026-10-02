@@ -15,7 +15,9 @@ use App\Http\Controllers\Admin\ProductVariantController;
 use App\Http\Controllers\Admin\PurchaseOrderController;
 use App\Http\Controllers\Admin\ReturnController;
 use App\Http\Controllers\Admin\ReviewController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SupplierController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'staff'])->group(function () {
@@ -58,4 +60,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'staff']
 
     Route::get('reviews', [ReviewController::class, 'index'])->name('reviews.index');
     Route::post('reviews/{review}/moderate', [ReviewController::class, 'moderate'])->name('reviews.moderate');
+
+    Route::resource('users', UserController::class)->except(['show']);
+    Route::resource('roles', RoleController::class)->only(['index', 'edit', 'update']);
 });

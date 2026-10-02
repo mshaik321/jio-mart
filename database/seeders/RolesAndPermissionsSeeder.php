@@ -67,6 +67,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $allPermissions = collect($this->roleMatrix)
             ->flatten()
             ->reject(fn (string $permission) => $permission === '*')
+            ->push('roles.manage') // Reserved for Super Admin only; no other role lists it explicitly.
             ->unique()
             ->values();
 
