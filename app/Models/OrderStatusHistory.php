@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use App\Enums\OrderStatus;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+#[Fillable(['order_id', 'status', 'note', 'changed_by', 'created_at'])]
 class OrderStatusHistory extends Model
 {
     const UPDATED_AT = null;

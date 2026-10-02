@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+#[Fillable(['coupon_id', 'customer_id', 'order_id', 'discount_amount', 'used_at'])]
 class CouponUsage extends Model
 {
     public $timestamps = false;
