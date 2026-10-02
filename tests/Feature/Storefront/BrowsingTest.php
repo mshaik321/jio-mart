@@ -3,7 +3,7 @@
 namespace Tests\Feature\Storefront;
 
 use App\Enums\ProductStatus;
-use App\Models\Category;
+use App\Models\Customer;
 use App\Models\Inventory;
 use App\Models\Product;
 use App\Models\ProductVariant;
@@ -88,7 +88,7 @@ class BrowsingTest extends TestCase
 
     public function test_checkout_page_renders_over_http_for_authenticated_customer(): void
     {
-        $customer = \App\Models\Customer::factory()->create();
+        $customer = Customer::factory()->create();
 
         $this->actingAs($customer->user)->get('/checkout')->assertOk();
     }

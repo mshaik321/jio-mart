@@ -2,7 +2,10 @@
 
 namespace Tests\Feature\Admin;
 
-use App\Models\Order;
+use App\Models\Brand;
+use App\Models\Category;
+use App\Models\Setting;
+use App\Models\Unit;
 use App\Models\User;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -36,15 +39,15 @@ class ReportsSettingsAuditTest extends TestCase
             'default_tax_rate' => 5,
         ])->assertRedirect('/admin/settings');
 
-        $this->assertSame('GroceryHub', \App\Models\Setting::getValue('site_name'));
+        $this->assertSame('GroceryHub', Setting::getValue('site_name'));
     }
 
     public function test_product_creation_and_order_status_change_are_audit_logged(): void
     {
         $admin = $this->admin();
-        $category = \App\Models\Category::factory()->create();
-        $brand = \App\Models\Brand::factory()->create();
-        $unit = \App\Models\Unit::factory()->create();
+        $category = Category::factory()->create();
+        $brand = Brand::factory()->create();
+        $unit = Unit::factory()->create();
 
         $this->actingAs($admin)->post('/admin/products', [
             'category_id' => $category->id,

@@ -4,7 +4,6 @@ namespace Tests\Feature\Api;
 
 use App\Enums\ProductStatus;
 use App\Models\Address;
-use App\Models\Category;
 use App\Models\Customer;
 use App\Models\DeliveryZone;
 use App\Models\Inventory;

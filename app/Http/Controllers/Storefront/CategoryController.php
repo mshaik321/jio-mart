@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Storefront;
 
 use App\Enums\ProductStatus;
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\ProductVariant;
+use App\Support\ProductFilters;
 
 class CategoryController extends Controller
 {
@@ -21,11 +23,11 @@ class CategoryController extends Controller
             })
             ->with(['product.primaryImage', 'product.brand']);
 
-        $query = app(\App\Support\ProductFilters::class)->apply($query, request());
+        $query = app(ProductFilters::class)->apply($query, request());
 
         $variants = $query->paginate(24)->withQueryString();
 
-        $brands = \App\Models\Brand::query()
+        $brands = Brand::query()
             ->whereHas('products', fn ($q) => $q->whereIn('category_id', $categoryIds))
             ->orderBy('name')
             ->get();

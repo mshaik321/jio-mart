@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 #[Fillable(['product_id', 'product_variant_id', 'path', 'alt_text', 'sort_order', 'is_primary'])]
 class ProductImage extends Model
@@ -28,6 +29,6 @@ class ProductImage extends Model
 
     public function url(): string
     {
-        return \Illuminate\Support\Facades\Storage::disk('public')->url($this->path);
+        return Storage::disk('public')->url($this->path);
     }
 }

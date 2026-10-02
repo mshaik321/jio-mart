@@ -3,6 +3,7 @@
 namespace Tests\Feature\Storefront;
 
 use App\Enums\ProductStatus;
+use App\Livewire\Storefront\AddToCartButton;
 use App\Livewire\Storefront\CartPage;
 use App\Livewire\Storefront\CheckoutPage;
 use App\Models\Address;
@@ -41,7 +42,7 @@ class CartAndCheckoutTest extends TestCase
     {
         $variant = $this->makeStockedVariant();
 
-        Livewire::test(\App\Livewire\Storefront\AddToCartButton::class, ['variant' => $variant])
+        Livewire::test(AddToCartButton::class, ['variant' => $variant])
             ->call('add')
             ->assertSet('added', true);
 
@@ -57,7 +58,7 @@ class CartAndCheckoutTest extends TestCase
 
         $variant = $this->makeStockedVariant();
 
-        Livewire::test(\App\Livewire\Storefront\AddToCartButton::class, ['variant' => $variant])->call('add');
+        Livewire::test(AddToCartButton::class, ['variant' => $variant])->call('add');
 
         Livewire::test(CartPage::class)
             ->call('updateQuantity', $variant->id, 3)
@@ -74,7 +75,7 @@ class CartAndCheckoutTest extends TestCase
 
         $variant = $this->makeStockedVariant();
 
-        Livewire::test(\App\Livewire\Storefront\AddToCartButton::class, ['variant' => $variant])->call('add');
+        Livewire::test(AddToCartButton::class, ['variant' => $variant])->call('add');
 
         $component = Livewire::test(CheckoutPage::class)
             ->set('addressId', $address->id)
@@ -99,7 +100,7 @@ class CartAndCheckoutTest extends TestCase
         DeliveryZone::factory()->create(['pincodes' => ['110001']]);
 
         $variant = $this->makeStockedVariant();
-        Livewire::test(\App\Livewire\Storefront\AddToCartButton::class, ['variant' => $variant])->call('add');
+        Livewire::test(AddToCartButton::class, ['variant' => $variant])->call('add');
 
         Livewire::test(CheckoutPage::class)
             ->set('addressId', $address->id)

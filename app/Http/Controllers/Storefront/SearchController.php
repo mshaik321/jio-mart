@@ -6,6 +6,7 @@ use App\Enums\ProductStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\ProductVariant;
+use App\Support\ProductFilters;
 use Illuminate\Http\Request;
 
 class SearchController extends Controller
@@ -30,7 +31,7 @@ class SearchController extends Controller
             })
             ->with(['product.primaryImage', 'product.brand', 'product.category']);
 
-        $query = app(\App\Support\ProductFilters::class)->apply($query, $request);
+        $query = app(ProductFilters::class)->apply($query, $request);
 
         $variants = $query->paginate(24)->withQueryString();
         $brands = Brand::query()->where('is_active', true)->orderBy('name')->get();

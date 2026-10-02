@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Unit;
 use App\Models\User;
+use App\Models\Warehouse;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -71,7 +72,7 @@ class CatalogManagementTest extends TestCase
         $category = Category::factory()->create();
         $brand = Brand::factory()->create();
         $unit = Unit::factory()->create();
-        \App\Models\Warehouse::factory()->create(['is_active' => true]);
+        Warehouse::factory()->create(['is_active' => true]);
 
         $response = $this->actingAs($admin)->post('/admin/products', [
             'category_id' => $category->id,

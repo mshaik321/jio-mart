@@ -22,7 +22,7 @@ class ReportController extends Controller
         $ordersInRange = Order::query()->whereBetween('created_at', [$from, $to]);
 
         $salesByDay = (clone $ordersInRange)
-            ->selectRaw("DATE(created_at) as day, COUNT(*) as orders, SUM(grand_total) as revenue")
+            ->selectRaw('DATE(created_at) as day, COUNT(*) as orders, SUM(grand_total) as revenue')
             ->whereNotIn('status', [OrderStatus::Cancelled])
             ->groupBy('day')
             ->orderBy('day')

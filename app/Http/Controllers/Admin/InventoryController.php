@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\InventoryMovementType;
 use App\Http\Controllers\Controller;
 use App\Models\Inventory;
+use App\Models\InventoryMovement;
 use App\Models\ProductVariant;
 use App\Models\Warehouse;
 use App\Services\AuditLogService;
@@ -61,7 +62,7 @@ class InventoryController extends Controller
     {
         $this->authorize('inventory.view');
 
-        $movements = \App\Models\InventoryMovement::query()
+        $movements = InventoryMovement::query()
             ->where('product_variant_id', $variant->id)
             ->with('warehouse', 'creator')
             ->latest('created_at')
