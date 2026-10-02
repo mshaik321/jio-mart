@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductVariantController;
 use App\Http\Controllers\Admin\PurchaseOrderController;
+use App\Http\Controllers\Admin\ReturnController;
+use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\SupplierController;
 use Illuminate\Support\Facades\Route;
 
@@ -47,4 +49,13 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'staff']
     Route::resource('delivery-zones', DeliveryZoneController::class)->except(['show']);
     Route::resource('delivery-slots', DeliverySlotController::class)->except(['show']);
     Route::resource('delivery-agents', DeliveryAgentController::class)->except(['show']);
+
+    Route::get('returns', [ReturnController::class, 'index'])->name('returns.index');
+    Route::get('returns/{return}', [ReturnController::class, 'show'])->name('returns.show');
+    Route::post('returns/{return}/approve', [ReturnController::class, 'approve'])->name('returns.approve');
+    Route::post('returns/{return}/reject', [ReturnController::class, 'reject'])->name('returns.reject');
+    Route::post('returns/{return}/complete', [ReturnController::class, 'complete'])->name('returns.complete');
+
+    Route::get('reviews', [ReviewController::class, 'index'])->name('reviews.index');
+    Route::post('reviews/{review}/moderate', [ReviewController::class, 'moderate'])->name('reviews.moderate');
 });

@@ -4,12 +4,15 @@ namespace App\Models;
 
 use App\Enums\ReviewStatus;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[Fillable(['product_id', 'customer_id', 'order_item_id', 'rating', 'title', 'body', 'is_verified_purchase', 'status'])]
 class Review extends Model
 {
+    use HasFactory;
+
     protected function casts(): array
     {
         return [
