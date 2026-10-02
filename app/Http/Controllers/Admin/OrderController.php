@@ -6,11 +6,14 @@ use App\Enums\OrderStatus;
 use App\Http\Controllers\Controller;
 use App\Models\DeliveryAgent;
 use App\Models\Order;
+use App\Services\AuditLogService;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    public function __construct(private AuditLogService $auditLog) {}
+
     public function index(Request $request)
     {
         $this->authorize('orders.view');
@@ -52,7 +55,9 @@ class OrderController extends Controller
             'note' => ['nullable', 'string', 'max:255'],
         ]);
 
+        $old = $order->status->value;
         $orderService->updateStatus($order, OrderStatus::from($data['status']), $request->user(), $data['note'] ?? null);
+        $this->auditLog->log($request->user(), 'order.status_changed', $order, ['status' => $old], ['status' => $data['status']]);
 
         return back()->with('status', 'Order status updated.');
     }

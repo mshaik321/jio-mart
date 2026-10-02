@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Coupon;
+use App\Services\AuditLogService;
 use Illuminate\Http\Request;
 
 class CouponController extends Controller
 {
+    public function __construct(private AuditLogService $auditLog) {}
+
     public function index()
     {
         $this->authorize('coupons.view');
@@ -28,7 +31,8 @@ class CouponController extends Controller
     {
         $this->authorize('coupons.create');
 
-        Coupon::create($this->validated($request));
+        $coupon = Coupon::create($this->validated($request));
+        $this->auditLog->log($request->user(), 'coupon.created', $coupon, [], $coupon->only(['code', 'type', 'value']));
 
         return redirect()->route('admin.coupons.index')->with('status', 'Coupon created.');
     }

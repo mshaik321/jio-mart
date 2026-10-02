@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\AuditLogService;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Password;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
+    public function __construct(private AuditLogService $auditLog) {}
+
     public function index(Request $request)
     {
         $this->authorize('users.view');
@@ -77,8 +80,11 @@ class UserController extends Controller
             'is_active' => ['nullable', 'boolean'],
         ]);
 
+        $oldRoles = $user->roles->pluck('name')->all();
         $user->syncRoles($data['roles'] ?? []);
         $user->update(['is_active' => $data['is_active'] ?? false]);
+
+        $this->auditLog->log($request->user(), 'user.permissions_changed', $user, ['roles' => $oldRoles], ['roles' => $data['roles'] ?? []]);
 
         return redirect()->route('admin.users.index')->with('status', 'User updated.');
     }

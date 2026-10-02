@@ -8,11 +8,14 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Unit;
+use App\Services\AuditLogService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
+    public function __construct(private AuditLogService $auditLog) {}
+
     public function index(Request $request)
     {
         $this->authorize('products.view');
@@ -42,6 +45,7 @@ class ProductController extends Controller
         $data['slug'] = Str::slug($data['name']).'-'.Str::random(5);
 
         $product = Product::create($data);
+        $this->auditLog->log($request->user(), 'product.created', $product, [], $product->only(['sku', 'name', 'mrp', 'selling_price', 'status']));
 
         return redirect()->route('admin.products.edit', $product)->with('status', 'Product created. Now add at least one variant.');
     }
@@ -59,14 +63,17 @@ class ProductController extends Controller
     {
         $this->authorize('products.update');
 
+        $old = $product->only(['name', 'mrp', 'selling_price', 'status']);
         $product->update($this->validated($request));
+        $this->auditLog->log($request->user(), 'product.updated', $product, $old, $product->only(['name', 'mrp', 'selling_price', 'status']));
 
         return redirect()->route('admin.products.edit', $product)->with('status', 'Product updated.');
     }
 
-    public function destroy(Product $product)
+    public function destroy(Request $request, Product $product)
     {
         $this->authorize('products.delete');
+        $this->auditLog->log($request->user(), 'product.deleted', $product, $product->only(['sku', 'name']), []);
 
         $product->delete();
 

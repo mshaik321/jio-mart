@@ -7,11 +7,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Inventory;
 use App\Models\ProductVariant;
 use App\Models\Warehouse;
+use App\Services\AuditLogService;
 use App\Services\InventoryService;
 use Illuminate\Http\Request;
 
 class InventoryController extends Controller
 {
+    public function __construct(private AuditLogService $auditLog) {}
+
     public function index(Request $request)
     {
         $this->authorize('inventory.view');
@@ -46,6 +49,10 @@ class InventoryController extends Controller
             $warehouse, $variant, InventoryMovementType::Adjustment,
             (int) $data['quantity'], null, $data['note'] ?? 'Manual adjustment', $request->user()->id,
         );
+
+        $this->auditLog->log($request->user(), 'inventory.adjusted', $variant, [], [
+            'warehouse_id' => $warehouse->id, 'quantity' => $data['quantity'], 'note' => $data['note'] ?? null,
+        ]);
 
         return redirect()->route('admin.inventory.index')->with('status', 'Stock adjusted.');
     }
