@@ -9,8 +9,10 @@ use App\Services\CartService;
 use App\Services\CouponService;
 use App\Support\CartContext;
 use Illuminate\Validation\ValidationException;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
+#[Layout('layouts.storefront')]
 class CartPage extends Component
 {
     public string $couponCode = '';

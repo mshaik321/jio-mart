@@ -10,8 +10,10 @@ use App\Services\CartService;
 use App\Services\CheckoutService;
 use App\Support\CartContext;
 use Illuminate\Validation\ValidationException;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
+#[Layout('layouts.storefront')]
 class CheckoutPage extends Component
 {
     public ?int $addressId = null;

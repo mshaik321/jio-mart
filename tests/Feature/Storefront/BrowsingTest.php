@@ -70,4 +70,26 @@ class BrowsingTest extends TestCase
     {
         $this->get('/categories/does-not-exist')->assertNotFound();
     }
+
+    /**
+     * Livewire full-page components need an explicit #[Layout(...)] attribute or Livewire
+     * throws "page component layout view not found" — Livewire::test() doesn't exercise that
+     * path, only a real route hit does, so these three must be real HTTP requests.
+     */
+    public function test_cart_page_renders_over_http(): void
+    {
+        $this->get('/cart')->assertOk();
+    }
+
+    public function test_wishlist_page_renders_over_http(): void
+    {
+        $this->get('/wishlist')->assertOk();
+    }
+
+    public function test_checkout_page_renders_over_http_for_authenticated_customer(): void
+    {
+        $customer = \App\Models\Customer::factory()->create();
+
+        $this->actingAs($customer->user)->get('/checkout')->assertOk();
+    }
 }

@@ -6,8 +6,10 @@ use App\Models\WishlistItem;
 use App\Services\CartService;
 use App\Support\CartContext;
 use Illuminate\Validation\ValidationException;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
+#[Layout('layouts.storefront')]
 class WishlistPage extends Component
 {
     public ?string $error = null;
