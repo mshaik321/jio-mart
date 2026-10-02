@@ -20,7 +20,12 @@ new #[Layout('layouts.guest')] class extends Component
 
         Session::regenerate();
 
-        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+        $default = auth()->user()->hasAnyRole([
+            'Super Admin', 'Admin', 'Store Manager', 'Inventory Manager',
+            'Order Manager', 'Delivery Manager', 'Delivery Agent',
+        ]) ? route('admin.dashboard', absolute: false) : route('home', absolute: false);
+
+        $this->redirectIntended(default: $default, navigate: true);
     }
 }; ?>
 

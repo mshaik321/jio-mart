@@ -22,6 +22,11 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 ])]
 class Order extends Model
 {
+    public function getRouteKeyName(): string
+    {
+        return 'order_number';
+    }
+
     protected function casts(): array
     {
         return [
