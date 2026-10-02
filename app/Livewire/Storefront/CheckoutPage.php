@@ -30,12 +30,7 @@ class CheckoutPage extends Component
 
     private function matchedZone(?Address $address): ?DeliveryZone
     {
-        if (! $address) {
-            return null;
-        }
-
-        return DeliveryZone::query()->where('is_active', true)->get()
-            ->first(fn (DeliveryZone $zone) => $zone->servicesPincode($address->pincode));
+        return $address ? DeliveryZone::findServicing($address->pincode) : null;
     }
 
     public function placeOrder(CheckoutService $checkout, CartService $carts)

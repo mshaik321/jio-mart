@@ -31,4 +31,10 @@ class DeliveryZone extends Model
     {
         return in_array($pincode, $this->pincodes ?? [], true);
     }
+
+    public static function findServicing(string $pincode): ?self
+    {
+        return static::query()->where('is_active', true)->get()
+            ->first(fn (self $zone) => $zone->servicesPincode($pincode));
+    }
 }
