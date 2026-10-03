@@ -78,7 +78,9 @@ Tracked against the original 52-section specification. ✅ = built and tested, �
 
 ## Deployment (§37–§49)
 
-See DEPLOYMENT.md. Summary: the application is fully built, tested, and runnable locally. **No deployment to `shop.allsoft.online` has happened** — this environment has no DNS/hosting/SSH/FTP credentials for that domain. DEPLOYMENT.md lists exactly what's needed to complete it.
+✅ **Deployed and live at https://shop.allsoft.online** — subdomain created on the existing BigRock/cPanel account, PHP 8.3, dedicated MySQL database with a scoped user, document root on `public/`, HTTPS enforced (Let's Encrypt), production caches built, scheduler cron installed, `APP_DEBUG=false`. Verified by placing a real order through the live API and confirming stock decremented. FuelDesk resources were not touched — the deployment is purely additive.
+
+🟡 Not browser-verified on production (admin CRUD / Livewire checkout click-through), and mail is still `MAIL_MAILER=log`. Full detail, including the two production-only bugs found and fixed during deployment, is in DEPLOYMENT.md.
 
 ## Explicitly out of scope / not attempted
 

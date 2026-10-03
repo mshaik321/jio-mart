@@ -2,6 +2,8 @@
 
 A grocery e-commerce marketplace built with Laravel 13, Blade, Livewire, Tailwind CSS, and MySQL/SQLite. Original branding, UI, database design, and source code — not affiliated with or copying any existing commercial grocery platform.
 
+**Live:** https://shop.allsoft.online · **Admin:** https://shop.allsoft.online/admin · **API:** https://shop.allsoft.online/api/v1
+
 ## Stack
 
 - PHP 8.3, Laravel 13.34
