@@ -90,7 +90,7 @@ class ApiV1Test extends TestCase
             'quantity' => 2,
         ])->assertOk()->assertJsonFragment(['quantity' => 2]);
 
-        $auth->getJson('/api/v1/cart')->assertOk()->assertJsonPath('data.subtotal', 160);
+        $auth->getJson('/api/v1/cart')->assertOk()->assertJsonPath('data.subtotal', '160.00');
 
         $order = $auth->postJson('/api/v1/checkout', [
             'address_id' => $address->id,

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Support\Money;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,11 +17,11 @@ class OrderResource extends JsonResource
             'status_label' => $this->status->label(),
             'payment_method' => $this->payment_method->value,
             'payment_status' => $this->payment_status->value,
-            'subtotal' => (float) $this->subtotal,
-            'discount_amount' => (float) $this->discount_amount,
-            'tax_amount' => (float) $this->tax_amount,
-            'delivery_charge' => (float) $this->delivery_charge,
-            'grand_total' => (float) $this->grand_total,
+            'subtotal' => Money::format($this->subtotal),
+            'discount_amount' => Money::format($this->discount_amount),
+            'tax_amount' => Money::format($this->tax_amount),
+            'delivery_charge' => Money::format($this->delivery_charge),
+            'grand_total' => Money::format($this->grand_total),
             'placed_at' => $this->placed_at?->toIso8601String(),
             'shipping_address' => [
                 'recipient_name' => $this->shipping_recipient_name,

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Support\Money;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -14,8 +15,8 @@ class ProductVariantResource extends JsonResource
             'sku' => $this->sku,
             'variant_name' => $this->variant_name,
             'attributes' => $this->attributes,
-            'mrp' => (float) $this->mrp,
-            'selling_price' => (float) $this->selling_price,
+            'mrp' => Money::format($this->mrp),
+            'selling_price' => Money::format($this->selling_price),
             'is_default' => $this->is_default,
             'in_stock' => $this->totalStock() > 0,
             'stock_quantity' => $this->totalStock(),

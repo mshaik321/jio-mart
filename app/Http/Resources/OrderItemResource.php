@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Support\Money;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -14,9 +15,9 @@ class OrderItemResource extends JsonResource
             'product_name' => $this->product_name,
             'variant_name' => $this->variant_name,
             'sku' => $this->sku,
-            'unit_price' => (float) $this->unit_price,
+            'unit_price' => Money::format($this->unit_price),
             'quantity' => $this->quantity,
-            'total' => (float) $this->total,
+            'total' => Money::format($this->total),
         ];
     }
 }

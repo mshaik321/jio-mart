@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Support\Money;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,8 +17,8 @@ class CartItemResource extends JsonResource
             'variant_name' => $this->variant->variant_name,
             'image_url' => $this->variant->product->primaryImage?->url(),
             'quantity' => $this->quantity,
-            'price' => (float) $this->price_snapshot,
-            'line_total' => (float) $this->price_snapshot * $this->quantity,
+            'price' => Money::format($this->price_snapshot),
+            'line_total' => Money::format($this->price_snapshot * $this->quantity),
         ];
     }
 }

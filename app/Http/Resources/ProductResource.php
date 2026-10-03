@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Support\Money;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -29,9 +30,9 @@ class ProductResource extends JsonResource
                 'name' => $this->unit->name,
                 'short_code' => $this->unit->short_code,
             ]),
-            'mrp' => (float) $this->mrp,
-            'selling_price' => (float) $this->selling_price,
-            'tax_rate' => (float) $this->tax_rate,
+            'mrp' => Money::format($this->mrp),
+            'selling_price' => Money::format($this->selling_price),
+            'tax_rate' => Money::format($this->tax_rate),
             'is_featured' => $this->is_featured,
             'is_bestseller' => $this->is_bestseller,
             'is_new_arrival' => $this->is_new_arrival,

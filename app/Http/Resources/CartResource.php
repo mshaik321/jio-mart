@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Services\CartService;
+use App\Support\Money;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,9 +17,9 @@ class CartResource extends JsonResource
             'id' => $this->id,
             'items' => CartItemResource::collection($this->items),
             'coupon_code' => $this->coupon?->code,
-            'subtotal' => $totals['subtotal'],
-            'tax_amount' => $totals['tax_amount'],
-            'discount' => $totals['discount'],
+            'subtotal' => Money::format($totals['subtotal']),
+            'tax_amount' => Money::format($totals['tax_amount']),
+            'discount' => Money::format($totals['discount']),
         ];
     }
 }
