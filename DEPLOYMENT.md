@@ -126,6 +126,10 @@ Smoke-tested on production: home, login, register, product, category and Telugu 
 
 **Rollback:** `php artisan down`; restore code with `tar xzf ~/backups/groceryhub-code-20261006-083926.tgz -C /home2/innovx5x` (or just `mv vendor.prev-… vendor` for a dependency-only rollback); `php artisan migrate:rollback --step=4 --force` (drops only the 4 new tables/columns); `php artisan optimize && php artisan up`. The DB dump restores everything as it was before the release.
 
+### Hotfix 60e522e (deployed 2026-10-06 16:32)
+
+My Orders / My Addresses returned 500 for staff and admin accounts, which had no customer profile. Deployed as a code-and-assets-only update with no migrations: the changed files plus `public/build`. Backup: `~/backups/groceryhub-pre-60e522e-20261006-163216.tgz`. Verified on production as an Admin account: dashboard, orders, addresses, address form, profile, wishlist, cart and checkout all return 200.
+
 ## Google sign-in ("Continue with Google")
 
 Only credentials are missing; code, routes, config and tests are done.
