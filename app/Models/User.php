@@ -54,4 +54,27 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasAnyRole(self::STAFF_ROLES);
     }
+
+    /**
+     * The shopping profile (cart, wishlist, addresses, orders hang off it),
+     * created on first use. Registration and Google sign-in create it up front;
+     * staff and admin-created accounts get one the first time they shop, so
+     * "My Orders" / "My Addresses" never hit a missing profile.
+     */
+    public function customerProfile(): Customer
+    {
+        if ($this->customer) {
+            return $this->customer;
+        }
+
+        $customer = Customer::withTrashed()->firstOrCreate(['user_id' => $this->id]);
+
+        if ($customer->trashed()) {
+            $customer->restore();
+        }
+
+        $this->setRelation('customer', $customer);
+
+        return $customer;
+    }
 }

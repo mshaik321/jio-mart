@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureCustomerProfile;
 use App\Http\Middleware\EnsureUserIsStaff;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Foundation\Application;
@@ -31,6 +32,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => PermissionMiddleware::class,
             'role_or_permission' => RoleOrPermissionMiddleware::class,
             'staff' => EnsureUserIsStaff::class,
+            'customer' => EnsureCustomerProfile::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

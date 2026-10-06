@@ -29,7 +29,7 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
     Route::get('delivery-zones', [DeliveryController::class, 'zones']);
     Route::get('delivery-slots', [DeliveryController::class, 'slots']);
 
-    Route::middleware('auth:sanctum')->group(function () {
+    Route::middleware(['auth:sanctum', 'customer'])->group(function () {
         Route::post('auth/logout', [AuthController::class, 'logout']);
 
         Route::get('profile', [ProfileController::class, 'show']);

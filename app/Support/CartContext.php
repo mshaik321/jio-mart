@@ -15,9 +15,7 @@ class CartContext
 {
     public static function customer(): ?Customer
     {
-        $user = Auth::user();
-
-        return $user?->customer;
+        return Auth::user()?->customerProfile();
     }
 
     /**

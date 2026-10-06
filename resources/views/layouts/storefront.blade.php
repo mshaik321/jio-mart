@@ -50,6 +50,9 @@
                                 <livewire:storefront.cart-badge />
                             </a>
                             @auth
+                                @if(auth()->user()->isStaff())
+                                    <a href="{{ route('admin.dashboard') }}" class="hidden sm:inline-flex rounded-md bg-emerald-900 px-2.5 py-1 font-semibold hover:bg-emerald-800">{{ __('Admin') }}</a>
+                                @endif
                                 <a href="{{ route('dashboard') }}" wire:navigate class="hover:text-emerald-200">{{ __('My Account') }}</a>
                                 <form method="POST" action="{{ route('logout') }}" class="hidden sm:block">
                                     @csrf

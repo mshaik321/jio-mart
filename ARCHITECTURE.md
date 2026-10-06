@@ -47,7 +47,7 @@ Controllers (web, admin, API) do three things only: authorize, validate, call a 
 
 `users` is the single authenticatable table for **both** staff and customers — one login system, one password reset flow, one email-verification flow, Spatie roles distinguish "Admin" from "Customer." `customers` is a 1:1 extension holding commerce-only data (date of birth, gender, loyalty points, referral code) and is the FK target for addresses/orders/cart/wishlist/reviews/returns.
 
-This was a judgment call, not a literal implementation of the spec's flat `users` + `customers` table list — it keeps staff accounts out of commerce tables entirely (an `Admin` user never has an address or a cart) while still sharing one auth system. See [DATABASE.md](DATABASE.md) for the full reasoning and the handful of other deliberate deviations.
+This was a judgment call, not a literal implementation of the spec's flat `users` + `customers` table list. Staff accounts stay out of commerce tables until they actually shop: the profile is created on first use of orders/addresses/cart/checkout (`User::customerProfile()`), while still sharing one auth system. See [DATABASE.md](DATABASE.md) for the full reasoning and the handful of other deliberate deviations.
 
 ## Single-warehouse assumption (V1)
 
