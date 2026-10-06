@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
             RolesAndPermissionsSeeder::class,
             AdminUserSeeder::class,
             OperationsSeeder::class,
-            CatalogSeeder::class,
+            GroceryCatalogSeeder::class,
             DemoCustomerSeeder::class,
         ]);
     }

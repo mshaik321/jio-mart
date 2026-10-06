@@ -1,12 +1,14 @@
 # Database
 
-34 migrations, MySQL 8 in production / SQLite for local dev and tests. All foreign keys are explicit (`foreignId()->constrained()`), with `restrictOnDelete()`/`nullOnDelete()`/`cascadeOnDelete()` chosen per relationship (see rationale below).
+43 migrations, MySQL 8 in production / SQLite for local dev and tests. All foreign keys are explicit (`foreignId()->constrained()`), with `restrictOnDelete()`/`nullOnDelete()`/`cascadeOnDelete()` chosen per relationship (see rationale below).
 
 ## Entity groups
 
 **Identity & access** — `users`, `customers`, `addresses`, plus Spatie's `roles`, `permissions`, `model_has_roles`, `model_has_permissions`, `role_has_permissions`.
 
-**Catalog** — `categories` (self-referencing `parent_id` for subcategories), `brands`, `units`, `products`, `product_variants`, `product_images`.
+**Catalog** — `categories` (self-referencing `parent_id` for subcategories), `brands`, `units`, `products` (with `sort_order` for merchandising), `product_variants`, `product_images`, `product_translations`, `category_translations`.
+
+**Identity additions** — `users.google_id` (nullable, unique): the Google account ID linked by "Continue with Google". No Google access/refresh tokens are stored.
 
 **Inventory & purchasing** — `stores`, `warehouses`, `inventories` (current snapshot), `inventory_movements` (append-only ledger), `suppliers`, `purchase_orders`, `purchase_order_items`.
 
@@ -49,4 +51,19 @@ php artisan migrate          # new environment
 php artisan migrate:fresh --seed   # local dev reset (never run against production)
 ```
 
-`AdminUserSeeder`, `RolesAndPermissionsSeeder`, `OperationsSeeder` (stores/warehouses/suppliers/delivery zones+slots+agents/coupons), `CatalogSeeder` (grocery categories/brands/products/variants+stock), `DemoCustomerSeeder` run in that order from `DatabaseSeeder`.
+`RolesAndPermissionsSeeder`, `AdminUserSeeder`, `OperationsSeeder` (stores/warehouses/suppliers/delivery zones+slots+agents/coupons), `GroceryCatalogSeeder` (bilingual starter catalog), `DemoCustomerSeeder` run in that order from `DatabaseSeeder`.
+
+## Multilingual catalog (English + Telugu, Hindi-ready)
+
+English copy stays on the base columns (`products.name`, `description`, `short_description`; `categories.name`, `description`). Every other language is one row per locale in `product_translations` / `category_translations` (`unique(product_id, locale)`). English is the fallback locale, and order snapshots, admin search and the API's `name` field already read it. A missing or blank translation falls back to English (`App\Models\Concerns\HasTranslations`).
+
+**Adding Hindi** needs no schema change: add `'hi' => 'हिन्दी'` to `config/app.php` → `supported_locales`, add `lang/hi.json` (copy `lang/te.json` keys), and enter Hindi names in the admin product/category forms, which show a field set for every supported locale.
+
+## GroceryCatalogSeeder
+
+Data lives in `database/seeders/data/grocery-catalog.php`: 15 categories and 129 products, each with an English + Telugu name and description, a pack-size variant or two, and indicative demo prices. Prices are not market prices. Records are keyed on stable SKUs (`GRO-ALMOND-001`, variant `GRO-ALMOND-001-250G`) and slugs.
+
+- **Idempotent / non-destructive** — only ever creates missing records. It never updates an existing product, so admin price or name edits survive a re-run. It never resurrects a product or category an admin deleted, and never deletes anything.
+- **Images** — `database/seeders/images/catalog/{slug}.webp` (original illustrations made for this project, 600×600, about 12 KB each) are copied to the `public` disk under `catalog/` the first time they're needed.
+- **Opening stock** — written through `InventoryService::recordMovement()` as an `adjustment` movement, only for variants with no stock record yet. Dried Cranberries is deliberately sold out and Pistachios/Cheese Slices are low, to demo the stock states.
+- **Environment aware** — in production, opening stock is skipped unless `CATALOG_SEED_OPENING_STOCK=true` (production stock should come from purchase orders).

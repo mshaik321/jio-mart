@@ -18,16 +18,16 @@ enum OrderStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::Pending => 'Pending',
-            self::Confirmed => 'Confirmed',
-            self::Processing => 'Processing',
-            self::Packed => 'Packed',
-            self::ReadyForDelivery => 'Ready for Delivery',
-            self::OutForDelivery => 'Out for Delivery',
-            self::Delivered => 'Delivered',
-            self::Cancelled => 'Cancelled',
-            self::Returned => 'Returned',
-            self::Refunded => 'Refunded',
+            self::Pending => __('Pending'),
+            self::Confirmed => __('Confirmed'),
+            self::Processing => __('Processing'),
+            self::Packed => __('Packed'),
+            self::ReadyForDelivery => __('Ready for Delivery'),
+            self::OutForDelivery => __('Out for Delivery'),
+            self::Delivered => __('Delivered'),
+            self::Cancelled => __('Cancelled'),
+            self::Returned => __('Returned'),
+            self::Refunded => __('Refunded'),
         };
     }
 

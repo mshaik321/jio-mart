@@ -13,24 +13,45 @@ class CartService
     public function getOrCreateCart(?Customer $customer, string $sessionId): Cart
     {
         if ($customer) {
-            $cart = Cart::query()->firstOrCreate(['customer_id' => $customer->id]);
+            $this->mergeGuestCart($customer, $sessionId);
 
-            $guest = Cart::query()
-                ->where('session_id', $sessionId)
-                ->whereNull('customer_id')
-                ->first();
-
-            if ($guest) {
-                foreach ($guest->items as $item) {
-                    $this->addItem($cart, $item->variant, $item->quantity);
-                }
-                $guest->delete();
-            }
-
-            return $cart;
+            return Cart::query()->firstOrCreate(['customer_id' => $customer->id]);
         }
 
         return Cart::query()->firstOrCreate(['session_id' => $sessionId, 'customer_id' => null]);
+    }
+
+    /**
+     * Move a guest cart into the customer's cart. Runs from the Login listener
+     * (see AppServiceProvider), so it must never throw: a line that can no
+     * longer be sold at the combined quantity is dropped.
+     */
+    public function mergeGuestCart(Customer $customer, string $sessionId): void
+    {
+        $guest = Cart::query()
+            ->where('session_id', $sessionId)
+            ->whereNull('customer_id')
+            ->first();
+
+        if (! $guest) {
+            return;
+        }
+
+        $cart = Cart::query()->firstOrCreate(['customer_id' => $customer->id]);
+
+        foreach ($guest->items as $item) {
+            if (! $item->variant) {
+                continue;
+            }
+
+            try {
+                $this->addItem($cart, $item->variant, $item->quantity);
+            } catch (ValidationException) {
+                // Sold out or unavailable since it was added as a guest.
+            }
+        }
+
+        $guest->delete();
     }
 
     public function addItem(Cart $cart, ProductVariant $variant, int $quantity): void
@@ -106,16 +127,16 @@ class CartService
         $product = $variant->product;
 
         if (! $variant->is_active || $product->status !== ProductStatus::Active) {
-            throw ValidationException::withMessages(['variant' => 'This product is currently unavailable.']);
+            throw ValidationException::withMessages(['variant' => __('This product is currently unavailable.')]);
         }
 
         if ($variant->totalStock() < $quantity) {
-            throw ValidationException::withMessages(['variant' => 'Not enough stock available for this item.']);
+            throw ValidationException::withMessages(['variant' => __('Not enough stock available for this item.')]);
         }
 
         if ($quantity < $product->min_order_qty || $quantity > $product->max_order_qty) {
             throw ValidationException::withMessages([
-                'variant' => "Quantity must be between {$product->min_order_qty} and {$product->max_order_qty}.",
+                'variant' => __('Quantity must be between :min and :max.', ['min' => $product->min_order_qty, 'max' => $product->max_order_qty]),
             ]);
         }
     }

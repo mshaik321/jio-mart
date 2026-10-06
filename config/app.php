@@ -86,6 +86,25 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Supported Locales
+    |--------------------------------------------------------------------------
+    |
+    | Locales a visitor can switch the storefront into, keyed by locale code
+    | and labelled in their own script. English is the fallback locale and
+    | the language catalog base fields (products.name etc.) are stored in;
+    | every other locale reads UI strings from lang/{code}.json and catalog
+    | copy from the *_translations tables. To add Hindi: add 'hi' here,
+    | create lang/hi.json, and add 'hi' translation rows.
+    |
+    */
+
+    'supported_locales' => [
+        'en' => 'English',
+        'te' => 'తెలుగు',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Encryption Key
     |--------------------------------------------------------------------------
     |

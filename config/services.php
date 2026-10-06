@@ -35,4 +35,16 @@ return [
         ],
     ],
 
+    /*
+    | "Continue with Google" (Laravel Socialite). The client secret is only
+    | ever read server-side. A relative redirect URI is resolved against the
+    | current host (HTTPS is forced in production); set GOOGLE_REDIRECT_URI to
+    | the absolute URL registered in Google Cloud to pin it exactly.
+    */
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URI', '/auth/google/callback'),
+    ],
+
 ];

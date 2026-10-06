@@ -3,36 +3,52 @@
 @php
     $product = $variant->product;
     $image = $product->primaryImage?->url();
-    $inStock = $variant->totalStock() > 0;
+    $stock = $variant->totalStock();
+    $name = $product->translated('name');
+    $alternateName = $product->alternateTranslated('name');
+    $mrp = (float) $variant->mrp;
+    $price = (float) $variant->selling_price;
+    $discount = $mrp > $price && $mrp > 0 ? (int) round(($mrp - $price) / $mrp * 100) : 0;
 @endphp
 
-<div class="group bg-white rounded-lg border border-gray-200 hover:shadow-md transition-shadow flex flex-col">
-    <a href="{{ route('products.show', $product->slug) }}" wire:navigate class="block p-4">
-        <div class="aspect-square bg-gray-100 rounded-md flex items-center justify-center overflow-hidden mb-3">
+<div class="group relative flex flex-col rounded-xl border border-gray-200 bg-white transition-shadow hover:shadow-md">
+    @if($discount > 0)
+        <span class="absolute left-2 top-2 z-10 rounded-md bg-amber-400 px-1.5 py-0.5 text-[11px] font-bold text-emerald-950">{{ __(':percent% OFF', ['percent' => $discount]) }}</span>
+    @endif
+
+    <a href="{{ route('products.show', $product->slug) }}" wire:navigate class="block p-3 sm:p-4">
+        <div class="mb-3 aspect-square overflow-hidden rounded-lg bg-gray-50">
             @if($image)
-                <img src="{{ $image }}" alt="{{ $product->name }}" class="object-cover w-full h-full">
+                <img src="{{ $image }}" alt="{{ $name }}" loading="lazy" width="600" height="600" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
             @else
-                <span class="text-gray-400 text-sm">No image</span>
+                <div class="flex h-full items-center justify-center text-sm text-gray-400">{{ __('No image') }}</div>
             @endif
         </div>
-        <p class="text-xs text-gray-500">{{ $variant->variant_name }}</p>
-        <h3 class="text-sm font-medium text-gray-900 line-clamp-2 group-hover:text-emerald-700">{{ $product->name }}</h3>
+        <h3 class="line-clamp-2 text-sm font-semibold leading-snug text-gray-900 group-hover:text-emerald-700">{{ $name }}</h3>
+        @if($alternateName)
+            <p class="mt-0.5 line-clamp-1 text-xs text-gray-500">{{ $alternateName }}</p>
+        @endif
+        <p class="mt-1 text-xs font-medium text-gray-500">{{ $variant->variant_name }}</p>
     </a>
 
-    <div class="px-4 pb-4 mt-auto">
-        <div class="flex items-baseline gap-2 mb-2">
-            <span class="text-base font-bold text-gray-900">₹{{ number_format((float) $variant->selling_price, 2) }}</span>
-            @if((float) $variant->mrp > (float) $variant->selling_price)
-                <span class="text-xs text-gray-400 line-through">₹{{ number_format((float) $variant->mrp, 2) }}</span>
+    <div class="mt-auto px-3 pb-3 sm:px-4 sm:pb-4">
+        <div class="flex flex-wrap items-baseline gap-x-1.5">
+            <span class="text-base font-bold text-gray-900">₹{{ number_format($price, 2) }}</span>
+            @if($discount > 0)
+                <span class="text-xs text-gray-400 line-through">₹{{ number_format($mrp, 2) }}</span>
             @endif
         </div>
 
-        @if($inStock)
-            <livewire:storefront.add-to-cart-button :variant="$variant" :key="'atc-'.$variant->id" />
-        @else
-            <button disabled class="w-full bg-gray-200 text-gray-500 text-sm font-semibold py-2 rounded-md cursor-not-allowed">
-                Out of Stock
+        @if($stock <= 0)
+            <p class="mb-2 text-xs font-medium text-red-600">{{ __('Out of stock') }}</p>
+            <button type="button" disabled class="h-9 w-full cursor-not-allowed rounded-md bg-gray-100 text-sm font-semibold text-gray-400">
+                {{ __('Out of stock') }}
             </button>
+        @else
+            <p class="mb-2 text-xs font-medium {{ $stock <= 10 ? 'text-amber-600' : 'text-emerald-700' }}">
+                {{ $stock <= 10 ? __('Only :count left', ['count' => $stock]) : __('In stock') }}
+            </p>
+            <livewire:storefront.add-to-cart-button :variant="$variant" :key="'atc-'.$variant->id" />
         @endif
     </div>
 </div>

@@ -1,4 +1,4 @@
-@php($old = fn ($field, $default = '') => old($field, $product->{$field} ?? $default))
+@php($old = fn ($field, $default = '') => ($value = old($field, $product->{$field} ?? $default)) instanceof \BackedEnum ? $value->value : $value)
 
 <div class="grid grid-cols-2 gap-4">
     <div>
@@ -51,6 +51,15 @@
     <textarea name="description" rows="4" class="w-full rounded-md border-gray-300 text-sm">{{ $old('description') }}</textarea>
 </div>
 
+@include('admin.partials._translations', [
+    'translatable' => $product ?? null,
+    'fields' => [
+        'name' => ['Name', 'text'],
+        'short_description' => ['Short Description', 'text'],
+        'description' => ['Description', 'textarea'],
+    ],
+])
+
 <div class="grid grid-cols-4 gap-4">
     <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">MRP</label>
@@ -87,6 +96,11 @@
             @endforeach
         </select>
     </div>
+</div>
+
+<div class="max-w-xs">
+    <label class="block text-sm font-medium text-gray-700 mb-1">Sort Order</label>
+    <input type="number" name="sort_order" min="0" value="{{ $old('sort_order', 0) }}" class="w-full rounded-md border-gray-300 text-sm">
 </div>
 
 <div class="flex gap-6">

@@ -1,49 +1,67 @@
-<x-layouts.storefront :title="'GroceryHub — Fresh groceries, delivered'">
-    <div class="bg-emerald-700 text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-            <h1 class="text-3xl sm:text-4xl font-bold">Fresh groceries, delivered fast.</h1>
-            <p class="mt-2 text-emerald-100">Staples, fruits &amp; vegetables, snacks and household essentials — all in one place.</p>
-        </div>
-    </div>
+<x-layouts.storefront :title="__('GroceryHub — Fresh groceries, delivered')">
+    <section class="bg-gradient-to-br from-emerald-700 via-emerald-700 to-emerald-800 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+            <div class="max-w-2xl">
+                <h1 class="text-3xl sm:text-4xl font-bold leading-tight">{{ __('Fresh groceries, delivered fast.') }}</h1>
+                <p class="mt-3 text-emerald-100 sm:text-lg">{{ __('Dals, rice, atta, spices, dry fruits and daily essentials — in English and తెలుగు.') }}</p>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h2 class="text-lg font-semibold text-gray-900 mb-4">Shop by Category</h2>
-        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4 mb-10">
-            @foreach($categories as $category)
-                <a href="{{ route('categories.show', $category->slug) }}" wire:navigate class="bg-white rounded-lg border border-gray-200 p-4 text-center hover:shadow-md transition-shadow">
-                    <div class="h-16 flex items-center justify-center text-emerald-700 font-bold text-2xl">
-                        {{ mb_substr($category->name, 0, 1) }}
+                <form action="{{ route('search') }}" method="GET" role="search" class="mt-6 flex max-w-xl rounded-lg bg-white p-1 shadow-lg">
+                    <input type="search" name="q" aria-label="{{ __('Search products') }}" placeholder="{{ __('Try “toor dal” or “కందిపప్పు”') }}"
+                        class="w-full min-w-0 rounded-md border-0 px-3 py-2.5 text-gray-900 focus:ring-2 focus:ring-emerald-400">
+                    <button type="submit" class="shrink-0 rounded-md bg-amber-400 px-5 text-sm font-bold text-emerald-950 hover:bg-amber-300">{{ __('Search') }}</button>
+                </form>
+
+                <ul class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-emerald-50">
+                    <li class="flex items-center gap-2"><span aria-hidden="true">✓</span> {{ __('Cash on delivery') }}</li>
+                    <li class="flex items-center gap-2"><span aria-hidden="true">✓</span> {{ __('Free delivery on eligible orders') }}</li>
+                    <li class="flex items-center gap-2"><span aria-hidden="true">✓</span> {{ __('Easy returns') }}</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+        @if($categories->isNotEmpty())
+            <section aria-labelledby="shop-by-category">
+                <h2 id="shop-by-category" class="text-lg sm:text-xl font-bold text-gray-900 mb-4">{{ __('Shop by Category') }}</h2>
+                <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-8 gap-3 sm:gap-4">
+                    @foreach($categories as $category)
+                        <a href="{{ route('categories.show', $category->slug) }}" wire:navigate class="group rounded-xl border border-gray-200 bg-white p-2 sm:p-3 text-center transition-shadow hover:shadow-md">
+                            <div class="aspect-square overflow-hidden rounded-lg bg-emerald-50">
+                                @if($category->imageUrl())
+                                    <img src="{{ $category->imageUrl() }}" alt="" loading="lazy" width="600" height="600" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
+                                @else
+                                    <div class="flex h-full items-center justify-center text-2xl font-bold text-emerald-700">{{ mb_substr($category->translated('name'), 0, 1) }}</div>
+                                @endif
+                            </div>
+                            <p class="mt-2 text-xs sm:text-sm font-semibold leading-tight text-gray-800 group-hover:text-emerald-700">{{ $category->translated('name') }}</p>
+                            @if($category->alternateTranslated('name'))
+                                <p class="text-[11px] leading-tight text-gray-500">{{ $category->alternateTranslated('name') }}</p>
+                            @endif
+                        </a>
+                    @endforeach
+                </div>
+            </section>
+        @endif
+
+        @foreach([
+            ['id' => 'featured', 'title' => __('Featured Products'), 'items' => $featured],
+            ['id' => 'popular', 'title' => __('Popular Products'), 'items' => $bestsellers],
+            ['id' => 'new-arrivals', 'title' => __('New Arrivals'), 'items' => $newArrivals],
+        ] as $rail)
+            @if($rail['items']->isNotEmpty())
+                <section aria-labelledby="{{ $rail['id'] }}">
+                    <div class="mb-4 flex items-baseline justify-between gap-4">
+                        <h2 id="{{ $rail['id'] }}" class="text-lg sm:text-xl font-bold text-gray-900">{{ $rail['title'] }}</h2>
+                        <a href="{{ route('search') }}" wire:navigate class="text-sm font-semibold text-emerald-700 hover:text-emerald-800">{{ __('View all') }} &rarr;</a>
                     </div>
-                    <p class="text-sm font-medium text-gray-800 mt-2">{{ $category->name }}</p>
-                </a>
-            @endforeach
-        </div>
-
-        @if($featured->isNotEmpty())
-            <h2 class="text-lg font-semibold text-gray-900 mb-4">Featured Products</h2>
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-10">
-                @foreach($featured as $variant)
-                    <x-product-card :variant="$variant" />
-                @endforeach
-            </div>
-        @endif
-
-        @if($bestsellers->isNotEmpty())
-            <h2 class="text-lg font-semibold text-gray-900 mb-4">Bestsellers</h2>
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-10">
-                @foreach($bestsellers as $variant)
-                    <x-product-card :variant="$variant" />
-                @endforeach
-            </div>
-        @endif
-
-        @if($newArrivals->isNotEmpty())
-            <h2 class="text-lg font-semibold text-gray-900 mb-4">New Arrivals</h2>
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                @foreach($newArrivals as $variant)
-                    <x-product-card :variant="$variant" />
-                @endforeach
-            </div>
-        @endif
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+                        @foreach($rail['items'] as $variant)
+                            <x-product-card :variant="$variant" />
+                        @endforeach
+                    </div>
+                </section>
+            @endif
+        @endforeach
     </div>
 </x-layouts.storefront>

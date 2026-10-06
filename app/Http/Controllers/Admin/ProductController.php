@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\Unit;
 use App\Services\AuditLogService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
@@ -42,9 +43,11 @@ class ProductController extends Controller
         $this->authorize('products.create');
 
         $data = $this->validated($request);
+        $translations = Arr::pull($data, 'translations', []);
         $data['slug'] = Str::slug($data['name']).'-'.Str::random(5);
 
         $product = Product::create($data);
+        $product->saveTranslations($translations);
         $this->auditLog->log($request->user(), 'product.created', $product, [], $product->only(['sku', 'name', 'mrp', 'selling_price', 'status']));
 
         return redirect()->route('admin.products.edit', $product)->with('status', 'Product created. Now add at least one variant.');
@@ -54,7 +57,7 @@ class ProductController extends Controller
     {
         $this->authorize('products.update');
 
-        $product->load('variants.inventories.warehouse', 'images');
+        $product->load('variants.inventories.warehouse', 'images', 'translations');
 
         return view('admin.products.edit', array_merge($this->formData(), compact('product')));
     }
@@ -64,7 +67,10 @@ class ProductController extends Controller
         $this->authorize('products.update');
 
         $old = $product->only(['name', 'mrp', 'selling_price', 'status']);
-        $product->update($this->validated($request));
+        $data = $this->validated($request);
+        $translations = Arr::pull($data, 'translations', []);
+        $product->update($data);
+        $product->saveTranslations($translations);
         $this->auditLog->log($request->user(), 'product.updated', $product, $old, $product->only(['name', 'mrp', 'selling_price', 'status']));
 
         return redirect()->route('admin.products.edit', $product)->with('status', 'Product updated.');
@@ -92,7 +98,7 @@ class ProductController extends Controller
 
     private function validated(Request $request): array
     {
-        return $request->validate([
+        $data = $request->validate([
             'category_id' => ['required', 'exists:categories,id'],
             'brand_id' => ['nullable', 'exists:brands,id'],
             'unit_id' => ['required', 'exists:units,id'],
@@ -110,6 +116,20 @@ class ProductController extends Controller
             'is_featured' => ['nullable', 'boolean'],
             'is_bestseller' => ['nullable', 'boolean'],
             'is_new_arrival' => ['nullable', 'boolean'],
+            'sort_order' => ['nullable', 'integer', 'min:0'],
+            'translations' => ['nullable', 'array:'.implode(',', Product::translationLocales())],
+            'translations.*.name' => ['nullable', 'string', 'max:255'],
+            'translations.*.short_description' => ['nullable', 'string', 'max:500'],
+            'translations.*.description' => ['nullable', 'string'],
         ]);
+
+        // Unchecked checkboxes aren't submitted at all; without this they could never be switched off.
+        foreach (['is_featured', 'is_bestseller', 'is_new_arrival'] as $flag) {
+            $data[$flag] = $request->boolean($flag);
+        }
+
+        $data['sort_order'] = (int) ($data['sort_order'] ?? 0);
+
+        return $data;
     }
 }

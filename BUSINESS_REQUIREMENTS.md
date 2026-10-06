@@ -70,7 +70,7 @@ Tracked against the original 52-section specification. ✅ = built and tested, �
 
 ## Testing (§33)
 
-✅ 74 automated tests, real passing suite (not claimed without running it — see TESTING.md). Laravel Pint applied. No static analysis tool (PHPStan/Larastan) configured or run.
+✅ 130 automated tests, real passing suite (not claimed without running it — see TESTING.md). Laravel Pint applied. No static analysis tool (PHPStan/Larastan) configured or run.
 
 ## Documentation (§35)
 

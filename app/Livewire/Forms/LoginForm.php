@@ -30,7 +30,9 @@ class LoginForm extends Form
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only(['email', 'password']), $this->remember)) {
+        // Deactivated accounts (users.is_active = false, set from the admin panel) get the same
+        // generic failure as a wrong password, so login doesn't reveal account status.
+        if (! Auth::attempt([...$this->only(['email', 'password']), 'is_active' => true], $this->remember)) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([

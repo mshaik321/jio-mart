@@ -10,10 +10,7 @@ class EnsureUserIsStaff
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (! $request->user() || ! $request->user()->hasAnyRole([
-            'Super Admin', 'Admin', 'Store Manager', 'Inventory Manager',
-            'Order Manager', 'Delivery Manager', 'Delivery Agent',
-        ])) {
+        if (! $request->user()?->isStaff()) {
             abort(403, 'This area is for GroceryHub staff only.');
         }
 

@@ -23,7 +23,7 @@ class CartPage extends Component
     {
         return app(CartService::class)
             ->getOrCreateCart(CartContext::customer(), CartContext::sessionId())
-            ->load('items.variant.product', 'coupon');
+            ->load('items.variant.product.primaryImage', 'items.variant.product.translations', 'coupon');
     }
 
     public function updateQuantity(int $variantId, int $quantity, CartService $carts): void
@@ -54,7 +54,7 @@ class CartPage extends Component
         $coupon = Coupon::query()->where('code', strtoupper(trim($this->couponCode)))->first();
 
         if (! $coupon) {
-            $this->error = 'Invalid coupon code.';
+            $this->error = __('Invalid coupon code.');
 
             return;
         }
@@ -62,7 +62,7 @@ class CartPage extends Component
         $customer = CartContext::customer();
 
         if (! $customer) {
-            $this->error = 'Please log in to apply a coupon.';
+            $this->error = __('Please log in to apply a coupon.');
 
             return;
         }

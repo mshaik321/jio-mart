@@ -14,10 +14,10 @@ class ProductController extends Controller
     {
         $query = Product::query()
             ->where('status', ProductStatus::Active)
-            ->with(['category', 'brand', 'unit', 'primaryImage', 'variants' => fn ($q) => $q->where('is_active', true)]);
+            ->with(['category', 'brand', 'unit', 'primaryImage', 'translations', 'variants' => fn ($q) => $q->where('is_active', true)->with('inventories')]);
 
         if ($term = $request->query('q')) {
-            $query->where(fn ($q) => $q->where('name', 'like', "%{$term}%")->orWhere('description', 'like', "%{$term}%"));
+            $query->matchingTerm((string) $term);
         }
 
         if ($categoryId = $request->query('category_id')) {
@@ -31,7 +31,9 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        $product->load(['category', 'brand', 'unit', 'primaryImage', 'images', 'variants' => fn ($q) => $q->where('is_active', true)]);
+        abort_unless($product->status === ProductStatus::Active, 404);
+
+        $product->load(['category', 'brand', 'unit', 'primaryImage', 'images', 'translations', 'variants' => fn ($q) => $q->where('is_active', true)->with('inventories')]);
 
         return new ProductResource($product);
     }

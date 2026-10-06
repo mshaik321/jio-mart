@@ -8,15 +8,16 @@ php artisan test --filter=test_name
 ./vendor/bin/pint             # auto-fix
 ```
 
-74 tests, 235 assertions, all passing as of the last run on this branch. PHPUnit against an in-memory SQLite database (`phpunit.xml`), isolated from the local dev SQLite file and from any MySQL database.
+130 tests, 2172 assertions, all passing as of the last run on this branch. PHPUnit against an in-memory SQLite database (`phpunit.xml`), isolated from the local dev SQLite file and from any MySQL database.
 
 ## Suite breakdown
 
 | Directory | What it covers |
 |---|---|
-| `tests/Feature/Auth/` | Registration, login/logout, password reset, email verification (Breeze defaults, adjusted for soft-deleted users and role-based redirects) |
+| `tests/Feature/Auth/` | Registration (validation, duplicate email/mobile, mobile normalisation, rate limiting), login/logout (deactivated users, case-insensitive email), password reset, email verification. `GoogleLoginTest` covers the Google redirect (OAuth `state`), new-customer creation, existing-Google-user login, safe linking by verified email, unverified-email/missing-email/staff/deactivated/different-Google-account refusals, cancelled consent, state mismatch and unexpected OAuth errors, using `Socialite::fake()` |
 | `tests/Feature/Services/` | `CheckoutFlowTest` — stock decrement, tax/discount/delivery-charge math, insufficient-stock rejection, free-delivery threshold. `OrderLifecycleTest` — cancel restores stock, can't cancel a delivered order, purchase-order partial/full receipt, return request → complete restores stock |
-| `tests/Feature/Storefront/` | Home/category/search/product-detail rendering, cart add/update via Livewire, **full checkout end-to-end**, and three HTTP-level renders for the Livewire full-page routes (see note below) |
+| `tests/Feature/Storefront/` | Home/category/search/product-detail rendering (images, both names, unit, price, discount, stock states, Telugu search, inactive product/category 404s), the add-to-cart quantity stepper and stock limits, guest-cart merge on login, English/Telugu UI and catalog switching (`LocalizationTest`), **full checkout end-to-end**, and three HTTP-level renders for the Livewire full-page routes (see note below) |
+| `tests/Feature/Seeders/` | `GroceryCatalogSeederTest` — every product has an English name, a Telugu name/description and a bundled 600×600 WebP image; required staples and their Telugu names; re-seeding is idempotent and never overwrites admin edits or resurrects deleted products; opening stock goes through the inventory ledger; production skips opening stock unless enabled |
 | `tests/Feature/Admin/` | One file per admin area: catalog (products+variants+images), inventory+purchasing, orders+coupons+delivery, returns+reviews, users+roles, reports+settings+audit-logs. Every file asserts the permission boundary too (a role without the permission gets 403) |
 | `tests/Feature/Api/` | Register/login, public catalog browsing, authenticated cart→checkout→order→cancel round trip, unauthenticated requests rejected |
 

@@ -20,10 +20,14 @@ Registering creates a `Customer` profile and assigns the `Customer` role automat
 |---|---|---|
 | GET | `/categories` | active top-level + child categories |
 | GET | `/categories/{slug}` | |
-| GET | `/products?q=&category_id=&per_page=` | paginated, active products only |
-| GET | `/products/{slug}` | includes variants, brand, category, primary image |
+| GET | `/products?q=&category_id=&per_page=` | paginated, active products only; `q` also matches Telugu names |
+| GET | `/products/{slug}` | includes variants, brand, category, primary image; 404 for inactive products |
 | GET | `/delivery-zones?pincode=` | with `pincode`: `{serviceable: bool, zone}`; without: all active zones |
 | GET | `/delivery-slots` | active slots |
+
+### Languages
+
+Product and category resources keep `name` (English) and add `translations` (`{"te": {"name": "కందిపప్పు", ...}}`) plus `localized_name`, which follows the request's `Accept-Language` header (`en` or `te`; it falls back to English). Category resources also include `image_url`.
 
 ## Customer (requires `Authorization: Bearer <token>`)
 

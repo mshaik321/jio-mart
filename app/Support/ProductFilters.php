@@ -36,7 +36,7 @@ class ProductFilters
             'price_asc' => $query->orderBy('selling_price'),
             'price_desc' => $query->orderByDesc('selling_price'),
             'newest' => $query->latest('product_variants.created_at'),
-            default => $query->orderBy('product_variants.id'),
+            default => $query->inCatalogOrder(),
         };
 
         return $query;

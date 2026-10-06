@@ -10,13 +10,15 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::query()->where('is_active', true)->orderBy('sort_order')->get();
+        $categories = Category::query()->where('is_active', true)->with('translations')->orderBy('sort_order')->get();
 
         return CategoryResource::collection($categories);
     }
 
     public function show(Category $category)
     {
-        return new CategoryResource($category);
+        abort_unless($category->is_active, 404);
+
+        return new CategoryResource($category->load('translations'));
     }
 }

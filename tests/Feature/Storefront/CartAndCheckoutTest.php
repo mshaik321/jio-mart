@@ -44,7 +44,7 @@ class CartAndCheckoutTest extends TestCase
 
         Livewire::test(AddToCartButton::class, ['variant' => $variant])
             ->call('add')
-            ->assertSet('added', true);
+            ->assertSet('quantity', 1);
 
         Livewire::test(CartPage::class)
             ->assertSee($variant->product->name)

@@ -57,6 +57,16 @@ This was a judgment call, not a literal implementation of the spec's flat `users
 
 Product search/filter (`app/Support/ProductFilters.php`) runs as plain MySQL `WHERE`/`LIKE` queries against `product_variants` joined to `products`. The spec explicitly asks for this to be architected so Elasticsearch/Solr could replace it later: `ProductFilters::apply()` is the single seam a future search backend would swap into, and `SearchController`/`CategoryController` don't know or care how the match happened.
 
+## Customer authentication
+
+One auth system: Breeze/Volt email + password, plus "Continue with Google" via Laravel Socialite (`Auth\GoogleController` → `Services\GoogleAuthService`) signing into the same `web` session guard. OAuth `state` is kept (never stateless). Google accounts are matched by `users.google_id`. An existing account is linked by email only when Google reports the email verified, and an unverified local account has its password and remember token rotated on link, which blocks pre-registration takeover. Staff accounts are never linked or signed in through Google. Registration requires a 10-digit Indian mobile number (normalised before the uniqueness check) and is rate-limited per IP. Deactivated users (`is_active = false`) can't log in by either method.
+
+Guest carts are keyed by a cart token stored in the session (`CartContext::sessionId()`) rather than the raw session ID. Laravel regenerates the session ID on login, and the token survives that, so the `Login` listener in `AppServiceProvider` merges the guest cart into the customer's cart on every login path.
+
+## Localization
+
+`SetLocale` middleware (web + api) applies the locale chosen with the header switcher (`/language/{locale}`, stored in the session) or, for the API, `Accept-Language`. Supported locales live in `config/app.php` → `supported_locales` (currently `en`, `te`). UI strings use `__()` with `lang/te.json` plus `lang/te/{auth,passwords,pagination,validation}.php`. Catalog copy uses translation tables; see DATABASE.md. Product cards show the name in the current language with the other language underneath.
+
 ## RBAC
 
 Roles and granular permissions via `spatie/laravel-permission`. Seeded roles: Super Admin, Admin, Store Manager, Inventory Manager, Order Manager, Delivery Manager, Delivery Agent, Customer (see `database/seeders/RolesAndPermissionsSeeder.php` for the exact permission matrix). `$this->authorize('products.view')` works directly in controllers with no per-model Policy needed, because Spatie registers a `Gate::before` callback that treats any ability name matching a permission name as a permission check. Policies (`app/Policies`) exist only for **customer-owned-resource** checks that permissions can't express — "is this *your* order/address/review" (`OrderPolicy`, `AddressPolicy`, `ReviewPolicy`, `OrderReturnPolicy`).

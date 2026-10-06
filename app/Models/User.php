@@ -15,11 +15,19 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable(['name', 'email', 'password', 'phone'])]
-#[Hidden(['password', 'remember_token'])]
+#[Hidden(['password', 'remember_token', 'google_id'])]
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
     use HasApiTokens, HasFactory, HasRoles, Notifiable, SoftDeletes;
+
+    /**
+     * Every role that grants access to the /admin panel.
+     */
+    public const STAFF_ROLES = [
+        'Super Admin', 'Admin', 'Store Manager', 'Inventory Manager',
+        'Order Manager', 'Delivery Manager', 'Delivery Agent',
+    ];
 
     protected function casts(): array
     {
@@ -40,5 +48,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function deliveryAgent(): HasOne
     {
         return $this->hasOne(DeliveryAgent::class);
+    }
+
+    public function isStaff(): bool
+    {
+        return $this->hasAnyRole(self::STAFF_ROLES);
     }
 }

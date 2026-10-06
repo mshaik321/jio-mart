@@ -14,9 +14,15 @@ class ProductResource extends JsonResource
             'id' => $this->id,
             'sku' => $this->sku,
             'name' => $this->name,
+            'localized_name' => $this->whenLoaded('translations', fn () => $this->translated('name')),
             'slug' => $this->slug,
             'short_description' => $this->short_description,
             'description' => $this->description,
+            'translations' => $this->whenLoaded('translations', fn () => $this->translations->mapWithKeys(fn ($translation) => [$translation->locale => [
+                'name' => $translation->name,
+                'short_description' => $translation->short_description,
+                'description' => $translation->description,
+            ]])),
             'category' => $this->whenLoaded('category', fn () => [
                 'id' => $this->category->id,
                 'name' => $this->category->name,

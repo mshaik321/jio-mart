@@ -108,4 +108,34 @@ Two production-only bugs were found and fixed during this process — see the co
 - **Admin panel and storefront flows were not driven through a browser on production.** The pages render (HTTP 200) and the same code paths are covered by 74 passing automated tests plus the live API order above, but no human/browser click-through of admin CRUD or the Livewire checkout UI has happened against production.
 - No mobile-device/responsive check on production (layout is Tailwind responsive and was built mobile-first, but unverified on a real device).
 - Mail is `MAIL_MAILER=log` — password reset and email verification emails are written to the log, not delivered. Needs real SMTP credentials to function.
-- Seeded demo catalog (faker-generated product names) is still in the production database. Replace with real catalog data before launch.
+- Seeded demo catalog (faker-generated product names) is still in the production database. The bilingual starter catalog (below) is ready to add alongside it. The old faker products/categories/brands are not touched by any seeder; deactivate them from the admin panel (Products → status "inactive", Categories → untick Active) before launch.
+
+## Pending release: customer auth + bilingual catalog (not yet deployed)
+
+Built and tested locally only. Nothing below has been run against production. To ship it, after the usual build/upload:
+
+```bash
+php artisan migrate --force          # 4 additive migrations: users.google_id, products.sort_order, product_translations, category_translations
+php artisan db:seed --class=GroceryCatalogSeeder --force   # adds the 129-product catalog; skips existing SKUs; no opening stock in production unless CATALOG_SEED_OPENING_STOCK=true
+php artisan optimize
+```
+
+`composer install --no-dev` remains the recommended build. `laravel/boost` is a dev-only package and does nothing outside `local`/debug anyway.
+
+## Google sign-in ("Continue with Google")
+
+Only credentials are missing; code, routes, config and tests are done.
+
+1. Google Cloud Console → **APIs & Services → OAuth consent screen**: user type *External*; app name *GroceryHub*; support email; authorised domain `allsoft.online`; scopes `openid`, `email`, `profile` (non-sensitive, so no Google verification review is needed); publish the app ("In production") so any Google user can sign in.
+2. **APIs & Services → Credentials → Create credentials → OAuth client ID** → *Web application*.
+   - Authorised JavaScript origins: `https://shop.allsoft.online` (and `http://localhost:8000` for local dev)
+   - Authorised redirect URIs: `https://shop.allsoft.online/auth/google/callback` (and `http://localhost:8000/auth/google/callback`)
+3. Put the values in the **server** `.env` only (never in git), then `php artisan config:cache`:
+   ```
+   GOOGLE_CLIENT_ID=xxxxxxxx.apps.googleusercontent.com
+   GOOGLE_CLIENT_SECRET=xxxxxxxx
+   GOOGLE_REDIRECT_URI=https://shop.allsoft.online/auth/google/callback
+   ```
+4. Routes: `GET /auth/google/redirect` and `GET /auth/google/callback` (guest-only, throttled 10/min/IP). The client secret is only used server-side. HTTPS is already forced in production.
+
+In production the Google button is hidden until both credentials are set. In local/dev it always shows, and explains when Google isn't configured.

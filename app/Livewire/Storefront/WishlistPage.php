@@ -45,7 +45,7 @@ class WishlistPage extends Component
         $customer = CartContext::customer();
 
         $items = $customer
-            ? WishlistItem::query()->where('customer_id', $customer->id)->with('variant.product.primaryImage')->latest()->get()
+            ? WishlistItem::query()->where('customer_id', $customer->id)->with(['variant.product.primaryImage', 'variant.product.translations'])->latest()->get()
             : collect();
 
         return view('livewire.storefront.wishlist-page', compact('items'));

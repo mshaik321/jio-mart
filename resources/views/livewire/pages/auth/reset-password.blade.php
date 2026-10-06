@@ -70,6 +70,8 @@ new #[Layout('layouts.guest')] class extends Component
 }; ?>
 
 <div>
+    <h1 class="mb-4 text-2xl font-bold text-gray-900 dark:text-gray-100">{{ __('Choose a new password') }}</h1>
+
     <form wire:submit="resetPassword">
         <!-- Email Address -->
         <div>
@@ -96,10 +98,8 @@ new #[Layout('layouts.guest')] class extends Component
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
-        </div>
+        <x-primary-button class="mt-4 w-full">
+            {{ __('Reset Password') }}
+        </x-primary-button>
     </form>
 </div>

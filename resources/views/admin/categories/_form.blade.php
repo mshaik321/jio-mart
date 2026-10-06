@@ -20,6 +20,14 @@
     <textarea name="description" rows="3" class="w-full rounded-md border-gray-300 text-sm">{{ $old('description') }}</textarea>
 </div>
 
+@include('admin.partials._translations', [
+    'translatable' => $category ?? null,
+    'fields' => [
+        'name' => ['Name', 'text'],
+        'description' => ['Description', 'textarea'],
+    ],
+])
+
 <div>
     <label class="block text-sm font-medium text-gray-700 mb-1">Sort Order</label>
     <input type="number" name="sort_order" value="{{ $old('sort_order', 0) }}" class="w-full rounded-md border-gray-300 text-sm">

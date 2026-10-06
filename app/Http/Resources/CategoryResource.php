@@ -12,9 +12,15 @@ class CategoryResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'localized_name' => $this->whenLoaded('translations', fn () => $this->translated('name')),
+            'translations' => $this->whenLoaded('translations', fn () => $this->translations->mapWithKeys(fn ($translation) => [$translation->locale => [
+                'name' => $translation->name,
+                'description' => $translation->description,
+            ]])),
             'slug' => $this->slug,
             'parent_id' => $this->parent_id,
             'image' => $this->image,
+            'image_url' => $this->imageUrl(),
         ];
     }
 }

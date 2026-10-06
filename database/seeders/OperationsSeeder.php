@@ -25,7 +25,10 @@ class OperationsSeeder extends Seeder
             ['store_id' => $store->id, 'name' => 'Main Fulfilment Center', 'address' => 'Primary Fulfilment Center', 'is_active' => true],
         );
 
-        Supplier::factory()->count(5)->create();
+        // Demo suppliers/agents are only created on an empty table so re-seeding doesn't duplicate them.
+        if (Supplier::query()->doesntExist()) {
+            Supplier::factory()->count(5)->create();
+        }
 
         DeliveryZone::query()->firstOrCreate(
             ['name' => 'City Zone A'],
@@ -44,7 +47,9 @@ class OperationsSeeder extends Seeder
             );
         }
 
-        DeliveryAgent::factory()->count(3)->create();
+        if (DeliveryAgent::query()->doesntExist()) {
+            DeliveryAgent::factory()->count(3)->create();
+        }
 
         Coupon::query()->firstOrCreate(
             ['code' => 'WELCOME10'],

@@ -92,4 +92,88 @@ class BrowsingTest extends TestCase
 
         $this->actingAs($customer->user)->get('/checkout')->assertOk();
     }
+
+    public function test_home_page_lists_featured_products_with_image_names_unit_price_and_stock(): void
+    {
+        $variant = $this->makeStockedVariant(['name' => 'Toor Dal', 'slug' => 'toor-dal', 'is_featured' => true]);
+        $variant->update(['variant_name' => '1 kg', 'selling_price' => 165, 'mrp' => 185]);
+        $variant->product->translations()->create(['locale' => 'te', 'name' => 'కందిపప్పు']);
+        $variant->product->images()->create(['path' => 'catalog/products/toor-dal.webp', 'is_primary' => true]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Featured Products')
+            ->assertSee('Toor Dal')
+            ->assertSee('కందిపప్పు')
+            ->assertSee('/storage/catalog/products/toor-dal.webp')
+            ->assertSee('1 kg')
+            ->assertSee('₹165.00', false)
+            ->assertSee('11% OFF')
+            ->assertSee('In stock')
+            ->assertSee('Add to Cart');
+    }
+
+    public function test_category_page_only_lists_products_from_that_category(): void
+    {
+        $dal = $this->makeStockedVariant(['name' => 'Moong Dal', 'slug' => 'moong-dal']);
+        $this->makeStockedVariant(['name' => 'Sunflower Oil', 'slug' => 'sunflower-oil']);
+
+        $this->get(route('categories.show', $dal->product->category->slug))
+            ->assertOk()
+            ->assertSee('Moong Dal')
+            ->assertDontSee('Sunflower Oil');
+    }
+
+    public function test_search_matches_products_by_their_telugu_name(): void
+    {
+        $variant = $this->makeStockedVariant(['name' => 'Groundnuts', 'slug' => 'groundnuts']);
+        $variant->product->translations()->create(['locale' => 'te', 'name' => 'వేరుశెనగలు']);
+        $this->makeStockedVariant(['name' => 'Cashews', 'slug' => 'cashews']);
+
+        $this->get(route('search', ['q' => 'వేరుశెనగ']))
+            ->assertOk()
+            ->assertSee('Groundnuts')
+            ->assertDontSee('Cashews');
+    }
+
+    public function test_inactive_products_are_not_reachable_from_the_storefront(): void
+    {
+        $variant = $this->makeStockedVariant(['name' => 'Hidden Draft Product', 'status' => ProductStatus::Draft]);
+
+        $this->get(route('products.show', $variant->product->slug))->assertNotFound();
+        $this->get(route('search', ['q' => 'Hidden Draft']))->assertOk()->assertDontSee('Hidden Draft Product');
+    }
+
+    public function test_inactive_category_returns_404(): void
+    {
+        $variant = $this->makeStockedVariant();
+        $variant->product->category->update(['is_active' => false]);
+
+        $this->get(route('categories.show', $variant->product->category->slug))->assertNotFound();
+    }
+
+    public function test_out_of_stock_products_show_status_and_cannot_be_added_to_cart(): void
+    {
+        $product = Product::factory()->create(['name' => 'Dried Cranberries', 'status' => ProductStatus::Active, 'is_featured' => true]);
+        ProductVariant::factory()->default()->create(['product_id' => $product->id]);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Dried Cranberries')
+            ->assertSee('Out of stock')
+            ->assertDontSee('Add to Cart');
+
+        $this->get(route('products.show', $product->slug))
+            ->assertOk()
+            ->assertSee('Out of stock')
+            ->assertDontSeeLivewire('storefront.add-to-cart-button');
+    }
+
+    public function test_low_stock_products_show_how_many_are_left(): void
+    {
+        $variant = $this->makeStockedVariant(['is_featured' => true]);
+        $variant->inventories()->update(['quantity_on_hand' => 4]);
+
+        $this->get('/')->assertOk()->assertSee('Only 4 left');
+    }
 }

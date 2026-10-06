@@ -10,6 +10,8 @@ A grocery e-commerce marketplace built with Laravel 13, Blade, Livewire, Tailwin
 - MySQL 8 in production, SQLite for local development/tests
 - Blade + Livewire 3 (Volt for auth) + Tailwind CSS + Alpine.js
 - Laravel Sanctum (REST API token auth)
+- Laravel Socialite ("Continue with Google" sign-in)
+- English + తెలుగు (Telugu) storefront, with a schema ready for more languages
 - Spatie laravel-permission (RBAC)
 
 ## Quick start (local development)
@@ -26,6 +28,10 @@ php artisan serve
 
 Visit `http://127.0.0.1:8000`. The seeder prints a demo admin login (or set `ADMIN_EMAIL`/`ADMIN_PASSWORD` in `.env` before seeding to control it). A demo customer account is also seeded: `customer@groceryhub.test` / `password`.
 
+The seed includes a 129-product starter grocery catalog (15 categories, English + Telugu names, a bundled image per product). Its prices are indicative demo values, not market prices. To add just the catalog to an existing database: `php artisan db:seed --class=GroceryCatalogSeeder` (safe to re-run; see DATABASE.md).
+
+"Continue with Google" needs `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` in `.env`. Without them the button explains Google sign-in is unavailable. See DEPLOYMENT.md → Google sign-in.
+
 - Storefront: `/`
 - Admin panel: `/admin` (staff roles only)
 - REST API: `/api/v1`
@@ -36,7 +42,7 @@ Visit `http://127.0.0.1:8000`. The seeder prints a demo admin login (or set `ADM
 php artisan test
 ```
 
-74 feature tests cover services (checkout/inventory/returns/purchasing), the storefront, the full admin panel, and the REST API. See [TESTING.md](TESTING.md).
+130 feature tests cover services (checkout/inventory/returns/purchasing), registration/login/Google sign-in, the storefront and its Telugu localization, the catalog seeder, the full admin panel, and the REST API. See [TESTING.md](TESTING.md).
 
 ## Documentation
 
@@ -60,7 +66,10 @@ app/
   Models/             Eloquent models
   Policies/            Customer-owned-resource authorization
   Services/            Business logic (Cart, Checkout, Inventory, Order,
-                        Purchase, Return, Review, Coupon, AuditLog)
+                        Purchase, Return, Review, Coupon, AuditLog, GoogleAuth)
+lang/te.json, lang/te/  Telugu UI strings (English is the fallback locale)
+database/seeders/data/grocery-catalog.php   bilingual starter catalog
+database/seeders/images/catalog/            one 600x600 WebP per product
 resources/views/
   storefront/, admin/, livewire/storefront/
 routes/

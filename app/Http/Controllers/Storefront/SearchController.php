@@ -16,25 +16,19 @@ class SearchController extends Controller
         $term = trim((string) $request->query('q', ''));
 
         $query = ProductVariant::query()
-            ->where('is_default', true)
-            ->where('is_active', true)
-            ->whereHas('product', function ($q) use ($term) {
-                $q->where('status', ProductStatus::Active);
-
-                if ($term !== '') {
-                    $q->where(function ($inner) use ($term) {
-                        $inner->where('name', 'like', "%{$term}%")
-                            ->orWhere('sku', 'like', "%{$term}%")
-                            ->orWhere('description', 'like', "%{$term}%");
-                    });
-                }
-            })
-            ->with(['product.primaryImage', 'product.brand', 'product.category']);
+            ->listable()
+            ->when($term !== '', fn ($q) => $q->whereHas('product', fn ($product) => $product->matchingTerm($term)))
+            ->with(['product.brand', 'product.category']);
 
         $query = app(ProductFilters::class)->apply($query, $request);
 
         $variants = $query->paginate(24)->withQueryString();
-        $brands = Brand::query()->where('is_active', true)->orderBy('name')->get();
+
+        $brands = Brand::query()
+            ->where('is_active', true)
+            ->whereHas('products', fn ($q) => $q->where('status', ProductStatus::Active))
+            ->orderBy('name')
+            ->get();
 
         return view('storefront.search.index', compact('variants', 'brands', 'term'));
     }
