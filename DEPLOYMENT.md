@@ -1,6 +1,6 @@
 # Deployment
 
-## Current status: deployed and live
+## Current status: deployed and live (latest release e92c158, 2026-10-06)
 
 **https://shop.allsoft.online** — deployed, HTTPS working, smoke-tested end to end against the live MySQL database.
 
@@ -108,19 +108,23 @@ Two production-only bugs were found and fixed during this process — see the co
 - **Admin panel and storefront flows were not driven through a browser on production.** The pages render (HTTP 200) and the same code paths are covered by 74 passing automated tests plus the live API order above, but no human/browser click-through of admin CRUD or the Livewire checkout UI has happened against production.
 - No mobile-device/responsive check on production (layout is Tailwind responsive and was built mobile-first, but unverified on a real device).
 - Mail is `MAIL_MAILER=log` — password reset and email verification emails are written to the log, not delivered. Needs real SMTP credentials to function.
-- Seeded demo catalog (faker-generated product names) is still in the production database. The bilingual starter catalog (below) is ready to add alongside it. The old faker products/categories/brands are not touched by any seeder; deactivate them from the admin panel (Products → status "inactive", Categories → untick Active) before launch.
+- The new catalog was seeded **without stock** (owner's choice), so every product shows "Out of stock" until real stock is added in Admin → Inventory or via purchase orders.
 
-## Pending release: customer auth + bilingual catalog (not yet deployed)
+## Release e92c158: customer auth + bilingual catalog (deployed 2026-10-06)
 
-Built and tested locally only. Nothing below has been run against production. To ship it, after the usual build/upload:
+Deployed with the owner's approval. Steps, in order:
 
-```bash
-php artisan migrate --force          # 4 additive migrations: users.google_id, products.sort_order, product_translations, category_translations
-php artisan db:seed --class=GroceryCatalogSeeder --force   # adds the 129-product catalog; skips existing SKUs; no opening stock in production unless CATALOG_SEED_OPENING_STOCK=true
-php artisan optimize
-```
+1. **Backups** (mode 600): `~/backups/groceryhub-db-20261006-083926.sql.gz` (mysqldump, credentials read from `.env` via a temporary option file) and `~/backups/groceryhub-code-20261006-083926.tgz`.
+2. `php artisan down`, then the code was installed from a clean `git archive` of the commit. Built with `composer install --no-dev` (so no dev packages, no Boost) and a fresh `npm run build`. The old `vendor/` was kept as `vendor.prev-20261006-083926`.
+3. `php artisan migrate --force`: 4 additive migrations (`users.google_id`, `products.sort_order`, `product_translations`, `category_translations`).
+4. `php artisan db:seed --class=GroceryCatalogSeeder --force`: 15 categories and 129 products with Telugu names and images, no opening stock (production default).
+5. `php artisan optimize`, then `php artisan up`.
+6. `admin@groceryhub.test` got a new random password (handed to the owner, not stored anywhere).
+7. The original faker demo data was **hidden, not deleted** (owner's choice): the 76 `SKU-XXXX####` products set to `inactive`, and the 25 old demo categories (`fruits-vegetables`, `dairy-breakfast`, `staples`, `snacks-beverages`, `personal-care`, `household` and their children) set to not active. The one existing order is untouched.
 
-`composer install --no-dev` remains the recommended build. `laravel/boost` is a dev-only package and does nothing outside `local`/debug anyway.
+Smoke-tested on production: home, login, register, product, category and Telugu search pages return 200. Catalog images, `build/manifest.json`, the API (Telugu search) and `/up` return 200. The Google button stays hidden until credentials are set. A scripted login through the real Livewire login form reached the admin dashboard.
+
+**Rollback:** `php artisan down`; restore code with `tar xzf ~/backups/groceryhub-code-20261006-083926.tgz -C /home2/innovx5x` (or just `mv vendor.prev-… vendor` for a dependency-only rollback); `php artisan migrate:rollback --step=4 --force` (drops only the 4 new tables/columns); `php artisan optimize && php artisan up`. The DB dump restores everything as it was before the release.
 
 ## Google sign-in ("Continue with Google")
 
