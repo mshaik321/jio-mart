@@ -106,7 +106,7 @@ Two production-only bugs were found and fixed during this process — see the co
 ## Not verified / remaining
 
 - **Admin panel and storefront flows were not driven through a browser on production.** The pages render (HTTP 200) and the same code paths are covered by 74 passing automated tests plus the live API order above, but no human/browser click-through of admin CRUD or the Livewire checkout UI has happened against production.
-- No mobile-device/responsive check on production (layout is Tailwind responsive and was built mobile-first, but unverified on a real device).
+- Responsive layout checked on production only in an emulated phone viewport (headless Chrome at 360/375 px, see hotfix b0f2448), not on a real device.
 - Mail is `MAIL_MAILER=log` — password reset and email verification emails are written to the log, not delivered. Needs real SMTP credentials to function.
 - The new catalog was seeded **without stock** (owner's choice), so every product shows "Out of stock" until real stock is added in Admin → Inventory or via purchase orders.
 
@@ -129,6 +129,12 @@ Smoke-tested on production: home, login, register, product, category and Telugu 
 ### Hotfix 60e522e (deployed 2026-10-06 16:32)
 
 My Orders / My Addresses returned 500 for staff and admin accounts, which had no customer profile. Deployed as a code-and-assets-only update with no migrations: the changed files plus `public/build`. Backup: `~/backups/groceryhub-pre-60e522e-20261006-163216.tgz`. Verified on production as an Admin account: dashboard, orders, addresses, address form, profile, wishlist, cart and checkout all return 200.
+
+### Hotfix b0f2448 (deployed 2026-11-19 19:40)
+
+On phones the admin sidebar was hidden with no way to open it, the storefront's staff Admin link was hidden, and admin tables clipped their columns (including Edit/Delete). Deployed as a views-and-assets-only update with no migrations or dependency changes: the 22 changed Blade views plus `public/build`, then `php artisan optimize`. Before upload, the server's copies of those views were checksum-verified identical to the previous release. Backup: `~/backups/groceryhub-pre-b0f2448-20261119-193951.tgz` (the 22 views and the previous `public/build`). Verified on production after a scripted login as the Super Admin: server files match the commit by checksum, the live pages serve the new CSS, and at 375 px the menu button opens the sidebar, the products table scrolls to its actions, and no page scrolls horizontally; desktop is unchanged.
+
+**Rollback:** `tar xzf ~/backups/groceryhub-pre-b0f2448-20261119-193951.tgz -C /home2/innovx5x/shop.allsoft.online && php artisan optimize`.
 
 ## Google sign-in ("Continue with Google")
 
