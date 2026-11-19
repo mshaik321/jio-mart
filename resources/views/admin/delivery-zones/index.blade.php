@@ -3,7 +3,7 @@
         <h2 class="text-lg font-semibold text-gray-900">Delivery Zones</h2>
         <a href="{{ route('admin.delivery-zones.create') }}" class="bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-semibold px-4 py-2 rounded-md">+ New Zone</a>
     </div>
-    <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+    <div class="bg-white rounded-lg border border-gray-200 overflow-x-auto">
         <table class="w-full text-sm">
             <thead class="bg-gray-50 text-left text-gray-500">
                 <tr><th class="px-4 py-2">Name</th><th class="px-4 py-2">Pincodes</th><th class="px-4 py-2">Charge</th><th class="px-4 py-2">Free Above</th><th class="px-4 py-2"></th></tr>

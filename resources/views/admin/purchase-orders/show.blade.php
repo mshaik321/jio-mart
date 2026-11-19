@@ -7,7 +7,7 @@
         <span class="text-sm px-3 py-1 rounded-full bg-gray-100 text-gray-700 font-medium">{{ ucfirst(str_replace('_', ' ', $purchaseOrder->status->value)) }}</span>
     </div>
 
-    <form action="{{ route('admin.purchase-orders.receive', $purchaseOrder) }}" method="POST" class="bg-white border border-gray-200 rounded-lg overflow-hidden">
+    <form action="{{ route('admin.purchase-orders.receive', $purchaseOrder) }}" method="POST" class="bg-white border border-gray-200 rounded-lg overflow-x-auto">
         @csrf
         <table class="w-full text-sm">
             <thead class="bg-gray-50 text-left text-gray-500">

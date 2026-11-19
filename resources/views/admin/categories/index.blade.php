@@ -6,7 +6,7 @@
         @endcan
     </div>
 
-    <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+    <div class="bg-white rounded-lg border border-gray-200 overflow-x-auto">
         <table class="w-full text-sm">
             <thead class="bg-gray-50 text-left text-gray-500">
                 <tr>

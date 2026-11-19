@@ -5,7 +5,7 @@
             <a href="{{ route('admin.coupons.create') }}" class="bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-semibold px-4 py-2 rounded-md">+ New Coupon</a>
         @endcan
     </div>
-    <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+    <div class="bg-white rounded-lg border border-gray-200 overflow-x-auto">
         <table class="w-full text-sm">
             <thead class="bg-gray-50 text-left text-gray-500">
                 <tr><th class="px-4 py-2">Code</th><th class="px-4 py-2">Type</th><th class="px-4 py-2">Value</th><th class="px-4 py-2">Used</th><th class="px-4 py-2">Active</th><th class="px-4 py-2"></th></tr>

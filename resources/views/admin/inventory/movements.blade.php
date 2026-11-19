@@ -3,7 +3,7 @@
         Stock Movements — {{ $variant->product->name }} ({{ $variant->variant_name }})
     </h2>
 
-    <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+    <div class="bg-white rounded-lg border border-gray-200 overflow-x-auto">
         <table class="w-full text-sm">
             <thead class="bg-gray-50 text-left text-gray-500">
                 <tr><th class="px-4 py-2">Date</th><th class="px-4 py-2">Type</th><th class="px-4 py-2">Qty</th><th class="px-4 py-2">Balance After</th><th class="px-4 py-2">Warehouse</th><th class="px-4 py-2">Note</th></tr>

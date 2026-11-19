@@ -51,9 +51,15 @@
                             </a>
                             @auth
                                 @if(auth()->user()->isStaff())
-                                    <a href="{{ route('admin.dashboard') }}" class="hidden sm:inline-flex rounded-md bg-emerald-900 px-2.5 py-1 font-semibold hover:bg-emerald-800">{{ __('Admin') }}</a>
+                                    <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center rounded-md bg-emerald-900 p-1.5 font-semibold hover:bg-emerald-800 sm:px-2.5 sm:py-1" title="{{ __('Admin') }}">
+                                        <svg class="h-5 w-5 sm:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z"/></svg>
+                                        <span class="sr-only sm:not-sr-only">{{ __('Admin') }}</span>
+                                    </a>
                                 @endif
-                                <a href="{{ route('dashboard') }}" wire:navigate class="hover:text-emerald-200">{{ __('My Account') }}</a>
+                                <a href="{{ route('dashboard') }}" wire:navigate class="flex items-center gap-1 hover:text-emerald-200" title="{{ __('My Account') }}">
+                                    <svg class="h-5 w-5 sm:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/></svg>
+                                    <span class="sr-only sm:not-sr-only">{{ __('My Account') }}</span>
+                                </a>
                                 <form method="POST" action="{{ route('logout') }}" class="hidden sm:block">
                                     @csrf
                                     <button type="submit" class="hover:text-emerald-200">{{ __('Log out') }}</button>

@@ -11,10 +11,19 @@
         @livewireStyles
     </head>
     <body class="font-sans antialiased bg-gray-100 text-gray-900">
-        <div class="min-h-screen flex">
-            <aside class="w-64 bg-gray-900 text-gray-200 flex-shrink-0 hidden lg:flex lg:flex-col">
-                <div class="h-16 flex items-center px-5 text-white font-bold text-lg border-b border-gray-800">
+        <div x-data="{ sidebarOpen: false }" @keydown.escape.window="sidebarOpen = false" class="min-h-screen flex">
+            {{-- Below lg the sidebar is an off-canvas drawer opened from the header's menu button. --}}
+            <div x-show="sidebarOpen" x-cloak x-transition.opacity @click="sidebarOpen = false"
+                 class="fixed inset-0 z-40 bg-gray-900/60 lg:hidden" aria-hidden="true"></div>
+
+            <aside id="admin-sidebar"
+                   :class="{ 'translate-x-0': sidebarOpen, '-translate-x-full': ! sidebarOpen }"
+                   class="fixed inset-y-0 left-0 z-50 w-64 -translate-x-full bg-gray-900 text-gray-200 flex flex-col transition-transform duration-200 ease-in-out lg:static lg:z-auto lg:translate-x-0 lg:flex-shrink-0">
+                <div class="h-16 flex items-center justify-between gap-2 px-5 text-white font-bold text-lg border-b border-gray-800">
                     GroceryHub Admin
+                    <button type="button" @click="sidebarOpen = false" class="lg:hidden -mr-2 rounded-md p-2 text-gray-400 hover:bg-gray-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500" aria-label="Close menu">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>
+                    </button>
                 </div>
                 <nav class="flex-1 overflow-y-auto py-4 text-sm">
                     @php
@@ -78,11 +87,15 @@
             </aside>
 
             <div class="flex-1 min-w-0">
-                <header class="bg-white border-b border-gray-200 h-16 flex items-center px-6">
-                    <h1 class="text-lg font-semibold text-gray-900">{{ $title ?? 'Dashboard' }}</h1>
+                <header class="bg-white border-b border-gray-200 h-16 flex items-center gap-3 px-4 sm:px-6">
+                    <button type="button" @click="sidebarOpen = true" :aria-expanded="sidebarOpen.toString()" aria-controls="admin-sidebar"
+                            class="lg:hidden -ml-2 rounded-md p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500" aria-label="Open menu">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    </button>
+                    <h1 class="text-lg font-semibold text-gray-900 truncate">{{ $title ?? 'Dashboard' }}</h1>
                 </header>
 
-                <main class="p-6">
+                <main class="p-4 sm:p-6">
                     @if(session('status'))
                         <div class="bg-emerald-50 text-emerald-800 text-sm rounded-md p-3 mb-4">{{ session('status') }}</div>
                     @endif

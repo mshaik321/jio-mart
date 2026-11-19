@@ -1,7 +1,7 @@
 <x-layouts.admin title="Reports">
     <h2 class="text-lg font-semibold text-gray-900 mb-4">Reports</h2>
 
-    <form method="GET" class="mb-6 flex gap-3 items-end">
+    <form method="GET" class="mb-6 flex flex-wrap gap-3 items-end">
         <div>
             <label class="block text-xs text-gray-600 mb-1">From</label>
             <input type="date" name="from" value="{{ $from->format('Y-m-d') }}" class="rounded-md border-gray-300 text-sm">

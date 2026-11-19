@@ -3,7 +3,7 @@
         <h2 class="text-lg font-semibold text-gray-900">Delivery Agents</h2>
         <a href="{{ route('admin.delivery-agents.create') }}" class="bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-semibold px-4 py-2 rounded-md">+ New Agent</a>
     </div>
-    <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+    <div class="bg-white rounded-lg border border-gray-200 overflow-x-auto">
         <table class="w-full text-sm">
             <thead class="bg-gray-50 text-left text-gray-500">
                 <tr><th class="px-4 py-2">Name</th><th class="px-4 py-2">Phone</th><th class="px-4 py-2">Vehicle</th><th class="px-4 py-2">Status</th><th class="px-4 py-2"></th></tr>

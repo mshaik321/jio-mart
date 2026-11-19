@@ -30,7 +30,7 @@
             @endforeach
         </div>
 
-        <form action="{{ route('admin.products.images.store', $product) }}" method="POST" enctype="multipart/form-data" class="flex gap-3 items-end">
+        <form action="{{ route('admin.products.images.store', $product) }}" method="POST" enctype="multipart/form-data" class="flex flex-wrap gap-3 items-end">
             @csrf
             <div>
                 <label class="block text-xs text-gray-600 mb-1">Upload Image (JPG/PNG/WEBP, max 2MB)</label>
@@ -46,7 +46,7 @@
     <div class="max-w-3xl">
         <h3 class="font-semibold text-gray-900 mb-3">Variants</h3>
 
-        <div class="bg-white border border-gray-200 rounded-lg overflow-hidden mb-4">
+        <div class="bg-white border border-gray-200 rounded-lg overflow-x-auto mb-4">
             <table class="w-full text-sm">
                 <thead class="bg-gray-50 text-left text-gray-500">
                     <tr><th class="px-4 py-2">SKU</th><th class="px-4 py-2">Name</th><th class="px-4 py-2">Price</th><th class="px-4 py-2">Stock</th><th class="px-4 py-2">Default</th><th class="px-4 py-2"></th></tr>

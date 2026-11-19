@@ -37,7 +37,7 @@
         </div>
     @endcan
 
-    <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+    <div class="bg-white rounded-lg border border-gray-200 overflow-x-auto">
         <table class="w-full text-sm">
             <thead class="bg-gray-50 text-left text-gray-500">
                 <tr><th class="px-4 py-2">Variant ID</th><th class="px-4 py-2">Product</th><th class="px-4 py-2">Warehouse</th><th class="px-4 py-2">On Hand</th><th class="px-4 py-2">Reserved</th><th class="px-4 py-2">Available</th><th class="px-4 py-2"></th></tr>
