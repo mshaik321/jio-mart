@@ -116,6 +116,19 @@
         <div class="mt-12 border-t border-gray-200 pt-8 max-w-3xl">
             <h2 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Customer Reviews') }}</h2>
 
+            @if(session('status'))
+                <div class="bg-emerald-50 text-emerald-800 text-sm rounded-md p-3 mb-4">{{ session('status') }}</div>
+            @endif
+            @if($errors->any())
+                <div class="bg-red-50 text-red-700 text-sm rounded-md p-3 mb-4">
+                    <ul class="list-disc list-inside">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             @auth
                 <form action="{{ route('products.reviews.store', $product) }}" method="POST" class="bg-white border border-gray-200 rounded-lg p-4 mb-6">
                     @csrf

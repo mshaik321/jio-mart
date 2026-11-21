@@ -30,42 +30,47 @@
                         $sections = [
                             'Overview' => [['admin.dashboard', 'Dashboard']],
                             'Catalog' => [
-                                ['admin.categories.index', 'Categories'],
-                                ['admin.brands.index', 'Brands'],
-                                ['admin.products.index', 'Products'],
+                                ['admin.categories.index', 'Categories', 'categories.view'],
+                                ['admin.brands.index', 'Brands', 'brands.view'],
+                                ['admin.products.index', 'Products', 'products.view'],
                             ],
                             'Inventory' => [
-                                ['admin.inventory.index', 'Stock'],
-                                ['admin.suppliers.index', 'Suppliers'],
-                                ['admin.purchase-orders.index', 'Purchase Orders'],
+                                ['admin.inventory.index', 'Stock', 'inventory.view'],
+                                ['admin.suppliers.index', 'Suppliers', 'suppliers.view'],
+                                ['admin.purchase-orders.index', 'Purchase Orders', 'purchases.view'],
                             ],
                             'Sales' => [
-                                ['admin.orders.index', 'Orders'],
-                                ['admin.coupons.index', 'Coupons'],
-                                ['admin.returns.index', 'Returns'],
-                                ['admin.reviews.index', 'Reviews'],
+                                ['admin.orders.index', 'Orders', 'orders.view'],
+                                ['admin.coupons.index', 'Coupons', 'coupons.view'],
+                                ['admin.returns.index', 'Returns', 'returns.view'],
+                                ['admin.reviews.index', 'Reviews', 'reviews.view'],
                             ],
                             'Delivery' => [
-                                ['admin.delivery-zones.index', 'Delivery Zones'],
-                                ['admin.delivery-slots.index', 'Delivery Slots'],
-                                ['admin.delivery-agents.index', 'Delivery Agents'],
+                                ['admin.delivery-zones.index', 'Delivery Zones', 'delivery.manage'],
+                                ['admin.delivery-slots.index', 'Delivery Slots', 'delivery.manage'],
+                                ['admin.delivery-agents.index', 'Delivery Agents', 'delivery.manage'],
                             ],
                             'Reports' => [
-                                ['admin.reports.index', 'Reports'],
+                                ['admin.reports.index', 'Reports', 'reports.view'],
                             ],
                             'Administration' => [
-                                ['admin.users.index', 'Users'],
-                                ['admin.roles.index', 'Roles & Permissions'],
-                                ['admin.settings.index', 'Settings'],
-                                ['admin.audit-logs.index', 'Audit Logs'],
+                                ['admin.users.index', 'Users', 'users.view'],
+                                ['admin.roles.index', 'Roles & Permissions', 'roles.manage'],
+                                ['admin.settings.index', 'Settings', 'settings.manage'],
+                                ['admin.audit-logs.index', 'Audit Logs', 'audit_logs.view'],
                             ],
                         ];
                     @endphp
 
                     @foreach($sections as $heading => $links)
+                        @php
+                            $visibleLinks = collect($links)->filter(fn ($link) => Route::has($link[0]) && (! isset($link[2]) || auth()->user()->can($link[2])));
+                        @endphp
+                        @continue($visibleLinks->isEmpty())
                         <p class="px-5 mt-4 mb-1 text-xs uppercase tracking-wider text-gray-500">{{ $heading }}</p>
-                        @foreach($links as [$routeName, $label])
-                            @if(Route::has($routeName))
+                        @foreach($visibleLinks as $link)
+                            @php([$routeName, $label] = $link)
+                            @if(true)
                                 <a href="{{ route($routeName) }}"
                                    class="block px-5 py-2 {{ request()->routeIs($routeName.'*') ? 'bg-emerald-700 text-white' : 'hover:bg-gray-800' }}">
                                     {{ $label }}

@@ -20,7 +20,7 @@ class ProductVariantController extends Controller
             'sku' => ['required', 'string', 'max:100', 'unique:product_variants,sku'],
             'variant_name' => ['required', 'string', 'max:100'],
             'mrp' => ['required', 'numeric', 'min:0'],
-            'selling_price' => ['required', 'numeric', 'min:0'],
+            'selling_price' => ['required', 'numeric', 'min:0', 'lte:mrp'],
             'is_default' => ['nullable', 'boolean'],
             'is_active' => ['nullable', 'boolean'],
             'initial_quantity' => ['nullable', 'integer', 'min:0'],
@@ -57,7 +57,7 @@ class ProductVariantController extends Controller
         $data = $request->validate([
             'variant_name' => ['required', 'string', 'max:100'],
             'mrp' => ['required', 'numeric', 'min:0'],
-            'selling_price' => ['required', 'numeric', 'min:0'],
+            'selling_price' => ['required', 'numeric', 'min:0', 'lte:mrp'],
             'is_default' => ['nullable', 'boolean'],
             'is_active' => ['nullable', 'boolean'],
         ]);

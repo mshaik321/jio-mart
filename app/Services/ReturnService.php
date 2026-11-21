@@ -27,6 +27,24 @@ class ReturnService
             throw ValidationException::withMessages(['order' => 'Only delivered orders can be returned.']);
         }
 
+        if ($order->return()->exists()) {
+            throw ValidationException::withMessages(['order' => 'A return has already been requested for this order.']);
+        }
+
+        $orderedQuantities = $order->items()->pluck('quantity', 'id');
+
+        foreach ($items as $item) {
+            $ordered = $orderedQuantities->get($item['order_item_id']);
+
+            if ($ordered === null) {
+                throw ValidationException::withMessages(['items' => 'One of the selected items does not belong to this order.']);
+            }
+
+            if ((int) $item['quantity'] > (int) $ordered) {
+                throw ValidationException::withMessages(['items' => 'You cannot return more than the quantity you bought.']);
+            }
+        }
+
         return DB::transaction(function () use ($order, $items, $reason, $note) {
             $return = $order->customer->returns()->create([
                 'return_number' => 'RET'.now()->format('Ymd').Str::upper(Str::random(6)),
@@ -51,6 +69,8 @@ class ReturnService
 
     public function approve(OrderReturn $return): OrderReturn
     {
+        $this->ensureStatus($return, [ReturnStatus::Requested], 'Only requested returns can be approved.');
+
         $return->update(['status' => ReturnStatus::Approved, 'approved_at' => now()]);
 
         return $return;
@@ -58,6 +78,8 @@ class ReturnService
 
     public function reject(OrderReturn $return, ?string $note = null): OrderReturn
     {
+        $this->ensureStatus($return, [ReturnStatus::Requested], 'Only requested returns can be rejected.');
+
         $return->update(['status' => ReturnStatus::Rejected, 'note' => $note]);
 
         return $return;
@@ -65,6 +87,16 @@ class ReturnService
 
     public function complete(OrderReturn $return, float $refundAmount, ?User $actor = null): OrderReturn
     {
+        $this->ensureStatus(
+            $return,
+            [ReturnStatus::Approved, ReturnStatus::PickedUp, ReturnStatus::Inspected],
+            'Only approved returns can be completed.',
+        );
+
+        if ($refundAmount > (float) $return->order->grand_total) {
+            throw ValidationException::withMessages(['refund_amount' => 'The refund cannot be more than the order total.']);
+        }
+
         return DB::transaction(function () use ($return, $refundAmount, $actor) {
             $warehouse = Warehouse::query()->where('is_active', true)->firstOrFail();
 
@@ -96,5 +128,15 @@ class ReturnService
 
             return $return;
         });
+    }
+
+    /**
+     * @param  list<ReturnStatus>  $allowed
+     */
+    private function ensureStatus(OrderReturn $return, array $allowed, string $message): void
+    {
+        if (! in_array($return->status, $allowed, true)) {
+            throw ValidationException::withMessages(['return' => $message]);
+        }
     }
 }

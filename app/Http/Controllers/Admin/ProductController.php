@@ -108,7 +108,7 @@ class ProductController extends Controller
             'short_description' => ['nullable', 'string', 'max:500'],
             'weight' => ['nullable', 'numeric'],
             'mrp' => ['required', 'numeric', 'min:0'],
-            'selling_price' => ['required', 'numeric', 'min:0'],
+            'selling_price' => ['required', 'numeric', 'min:0', 'lte:mrp'],
             'tax_rate' => ['nullable', 'numeric', 'min:0', 'max:100'],
             'min_order_qty' => ['nullable', 'integer', 'min:1'],
             'max_order_qty' => ['nullable', 'integer', 'min:1'],

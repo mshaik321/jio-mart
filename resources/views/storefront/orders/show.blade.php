@@ -3,6 +3,15 @@
         @if(session('status'))
             <div class="bg-emerald-50 text-emerald-800 text-sm rounded-md p-3 mb-4">{{ session('status') }}</div>
         @endif
+        @if($errors->any())
+            <div class="bg-red-50 text-red-700 text-sm rounded-md p-3 mb-4">
+                <ul class="list-disc list-inside">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         <div class="flex justify-between items-start mb-6">
             <div>

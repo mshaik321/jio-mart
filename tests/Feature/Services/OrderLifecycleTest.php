@@ -153,7 +153,8 @@ class OrderLifecycleTest extends TestCase
             ['order_item_id' => $orderItem->id, 'quantity' => 2, 'reason' => 'Damaged'],
         ], 'Damaged on arrival');
 
-        app(ReturnService::class)->complete($return, 200.00);
+        app(ReturnService::class)->approve($return);
+        app(ReturnService::class)->complete($return->fresh(), 200.00);
 
         $this->assertSame(10, $variant->fresh()->totalStock());
         $this->assertSame('refunded', $order->fresh()->payment_status->value);

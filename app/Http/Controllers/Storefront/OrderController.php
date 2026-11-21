@@ -52,6 +52,12 @@ class OrderController extends Controller
     {
         $this->authorize('view', $order);
 
+        // Unticked items still submit their hidden quantity field; keep only the rows the customer selected.
+        $request->merge(['items' => array_values(array_filter(
+            (array) $request->input('items', []),
+            fn ($item) => is_array($item) && ! empty($item['order_item_id']),
+        ))]);
+
         $data = $request->validate([
             'reason' => ['required', 'string', 'max:255'],
             'items' => ['required', 'array', 'min:1'],
