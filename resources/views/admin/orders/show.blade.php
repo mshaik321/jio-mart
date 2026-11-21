@@ -78,6 +78,18 @@
                         </select>
                         <button type="submit" class="w-full bg-gray-800 hover:bg-gray-900 text-white text-sm font-semibold py-2 rounded-md">Assign Agent</button>
                     </form>
+                    @if($order->delivery)
+                        <form action="{{ route('admin.orders.delivery.update-status', $order) }}" method="POST" class="mt-4 pt-4 border-t border-gray-100">
+                            @csrf
+                            <label for="delivery-status" class="block text-xs text-gray-600 mb-1">Delivery status</label>
+                            <select id="delivery-status" name="status" class="w-full rounded-md border-gray-300 text-sm mb-2">
+                                @foreach(\App\Enums\DeliveryStatus::cases() as $deliveryStatus)
+                                    <option value="{{ $deliveryStatus->value }}" @selected($order->delivery->status === $deliveryStatus)>{{ ucfirst(str_replace('_', ' ', $deliveryStatus->value)) }}</option>
+                                @endforeach
+                            </select>
+                            <button type="submit" class="w-full border border-gray-300 text-gray-800 text-sm font-semibold py-2 rounded-md hover:bg-gray-50">Update Delivery Status</button>
+                        </form>
+                    @endif
                 </div>
             @endcan
 

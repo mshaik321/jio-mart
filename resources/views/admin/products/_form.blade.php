@@ -71,7 +71,7 @@
     </div>
     <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Tax Rate (%)</label>
-        <input type="number" step="0.01" name="tax_rate" value="{{ $old('tax_rate', 0) }}" class="w-full rounded-md border-gray-300 text-sm">
+        <input type="number" step="0.01" name="tax_rate" value="{{ $old('tax_rate', \App\Models\Setting::getValue('default_tax_rate', 0)) }}" class="w-full rounded-md border-gray-300 text-sm">
     </div>
     <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Weight (kg)</label>

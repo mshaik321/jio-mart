@@ -67,7 +67,7 @@
                             $visibleLinks = collect($links)->filter(fn ($link) => Route::has($link[0]) && (! isset($link[2]) || auth()->user()->can($link[2])));
                         @endphp
                         @continue($visibleLinks->isEmpty())
-                        <p class="px-5 mt-4 mb-1 text-xs uppercase tracking-wider text-gray-500">{{ $heading }}</p>
+                        <p class="px-5 mt-4 mb-1 text-xs uppercase tracking-wider text-gray-400">{{ $heading }}</p>
                         @foreach($visibleLinks as $link)
                             @php([$routeName, $label] = $link)
                             @if(true)
@@ -118,6 +118,19 @@
                 </main>
             </div>
         </div>
+        <script>
+            // Admin forms use visual <label> blocks without for/id; link each to the control that follows it.
+            document.addEventListener('DOMContentLoaded', () => {
+                let n = 0;
+                document.querySelectorAll('main label:not([for])').forEach((label) => {
+                    if (label.querySelector('input, select, textarea')) return;
+                    const control = label.parentElement && label.parentElement.querySelector('input:not([type=hidden]), select, textarea');
+                    if (!control) return;
+                    if (!control.id) control.id = 'field-' + (++n);
+                    label.setAttribute('for', control.id);
+                });
+            });
+        </script>
         @livewireScripts
     </body>
 </html>

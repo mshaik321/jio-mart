@@ -20,7 +20,7 @@ export default {
                 // Fresh green: buy buttons, prices, success states.
                 fresh: {
                     50: '#f1faec', 100: '#ddf2d2', 200: '#bde5a9', 300: '#94d175', 400: '#69b948',
-                    500: '#47a22b', 600: '#2f8a1e', 700: '#26701a', 800: '#1f5917', 900: '#174210',
+                    500: '#47a22b', 600: '#2a7a1b', 700: '#216017', 800: '#1a4d13', 900: '#174210',
                 },
                 // Sunny yellow: highlights, active pills, promo accents.
                 sun: {

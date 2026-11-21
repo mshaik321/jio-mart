@@ -31,7 +31,7 @@
                 </div>
             </main>
 
-            <footer class="pb-6 text-center text-xs text-gray-500 dark:text-gray-400">
+            <footer class="pb-6 text-center text-xs text-gray-600 dark:text-gray-400">
                 &copy; {{ now()->year }} GroceryHub &middot; {{ __('Fresh groceries, delivered to your doorstep.') }}
             </footer>
         </div>

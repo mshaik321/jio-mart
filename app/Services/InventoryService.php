@@ -6,6 +6,7 @@ use App\Enums\InventoryMovementType;
 use App\Models\Inventory;
 use App\Models\InventoryMovement;
 use App\Models\ProductVariant;
+use App\Models\Setting;
 use App\Models\Warehouse;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -40,6 +41,7 @@ class InventoryService
                     'product_variant_id' => $variant->id,
                     'quantity_on_hand' => 0,
                     'quantity_reserved' => 0,
+                    'low_stock_threshold' => (int) Setting::getValue('low_stock_threshold_default', 10),
                 ]);
             }
 

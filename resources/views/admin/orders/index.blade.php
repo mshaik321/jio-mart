@@ -3,7 +3,7 @@
 
     <form method="GET" class="mb-4 flex gap-3">
         <input type="text" name="q" value="{{ request('q') }}" placeholder="Order number..." class="rounded-md border-gray-300 text-sm w-64">
-        <select name="status" onchange="this.form.submit()" class="rounded-md border-gray-300 text-sm">
+        <select name="status" aria-label="Filter by status" onchange="this.form.submit()" class="rounded-md border-gray-300 text-sm">
             <option value="">All statuses</option>
             @foreach($statuses as $status)
                 <option value="{{ $status->value }}" @selected(request('status') === $status->value)>{{ $status->label() }}</option>

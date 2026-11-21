@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ $title ?? config('app.name', 'GroceryHub') }}</title>
+        <title>{{ $title ?? \App\Models\Setting::getValue('site_name') ?: config('app.name', 'GroceryHub') }}</title>
 
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700|noto-sans-telugu:400,600,700&display=swap" rel="stylesheet" />
@@ -87,7 +87,9 @@
                     </div>
                 </div>
 
-                @php($activeSection = $section ?? 'groceries')
+                @php
+                    $activeSection = $section ?? 'groceries';
+                @endphp
 
             <nav class="bg-brand-800" aria-label="{{ __('Shop sections') }}">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-1 overflow-x-auto whitespace-nowrap py-2 text-sm [scrollbar-width:none]">
@@ -97,7 +99,7 @@
                             class="inline-flex items-center gap-2 rounded-md px-3.5 py-1.5 font-semibold {{ $activeSection === $sectionKey ? 'bg-sun-300 text-brand-900' : 'text-white hover:bg-brand-700' }}">
                             {{ __($sectionItem['label']) }}
                             @unless($sectionItem['live'])
-                                <span class="rounded-full bg-fresh-500 px-1.5 py-0.5 text-[10px] font-bold uppercase leading-none text-white">{{ __('Soon') }}</span>
+                                <span class="rounded-full bg-fresh-700 px-1.5 py-0.5 text-[10px] font-bold uppercase leading-none text-white">{{ __('Soon') }}</span>
                             @endunless
                         </a>
                     @endforeach
@@ -125,9 +127,20 @@
             <footer class="bg-brand-900 text-brand-100 mt-12">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4 text-sm">
                     <div class="lg:col-span-2">
-                        <p class="font-semibold text-white text-lg mb-2">GroceryHub</p>
+                        @php
+                            $siteName = \App\Models\Setting::getValue('site_name') ?: 'GroceryHub';
+                            $supportEmail = \App\Models\Setting::getValue('support_email');
+                            $supportPhone = \App\Models\Setting::getValue('support_phone');
+                        @endphp
+                        <p class="font-semibold text-white text-lg mb-2">{{ $siteName }}</p>
                         <p>{{ __('Fresh groceries, delivered to your doorstep.') }}</p>
-                        <p class="mt-4 text-gray-500">&copy; {{ now()->year }} GroceryHub</p>
+                        @if($supportEmail || $supportPhone)
+                            <p class="mt-3">{{ __('Need help?') }}
+                                @if($supportPhone)<a href="tel:{{ preg_replace('/[^0-9+]/', '', $supportPhone) }}" class="underline hover:text-white">{{ $supportPhone }}</a>@endif
+                                @if($supportEmail)<a href="mailto:{{ $supportEmail }}" class="underline hover:text-white">{{ $supportEmail }}</a>@endif
+                            </p>
+                        @endif
+                        <p class="mt-4 text-brand-200">&copy; {{ now()->year }} {{ $siteName }}</p>
                     </div>
                     <div>
                         <p class="font-semibold text-white mb-2">{{ __('Shop') }}</p>

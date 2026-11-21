@@ -35,7 +35,7 @@
         <div class="flex flex-wrap items-baseline gap-x-1.5">
             <span class="text-base font-bold text-gray-900">₹{{ number_format($price, 2) }}</span>
             @if($discount > 0)
-                <span class="text-xs text-gray-400 line-through">₹{{ number_format($mrp, 2) }}</span>
+                <span class="text-xs text-gray-500 line-through">₹{{ number_format($mrp, 2) }}</span>
             @endif
         </div>
 
@@ -45,7 +45,7 @@
                 {{ __('Out of stock') }}
             </button>
         @else
-            <p class="mb-2 text-xs font-medium {{ $stock <= 10 ? 'text-amber-600' : 'text-fresh-700' }}">
+            <p class="mb-2 text-xs font-medium {{ $stock <= 10 ? 'text-amber-700' : 'text-fresh-700' }}">
                 {{ $stock <= 10 ? __('Only :count left', ['count' => $stock]) : __('In stock') }}
             </p>
             <livewire:storefront.add-to-cart-button :variant="$variant" :key="'atc-'.$variant->id" />

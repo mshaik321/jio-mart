@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DeliveryAgent;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class DeliveryController extends Controller
 {
@@ -15,7 +16,7 @@ class DeliveryController extends Controller
         $this->authorize('delivery.manage');
 
         $data = $request->validate([
-            'delivery_agent_id' => ['required', 'exists:delivery_agents,id'],
+            'delivery_agent_id' => ['required', Rule::exists('delivery_agents', 'id')->where('is_active', true)],
         ]);
 
         $delivery = $order->delivery ?? $order->delivery()->create([
@@ -44,6 +45,11 @@ class DeliveryController extends Controller
         ]);
 
         $delivery = $order->delivery;
+
+        if (! $delivery) {
+            return back()->withErrors(['status' => 'Assign a delivery agent before updating the delivery status.']);
+        }
+
         $delivery->status = $data['status'];
 
         match ($data['status']) {
@@ -53,6 +59,10 @@ class DeliveryController extends Controller
         };
 
         $delivery->save();
+
+        if (in_array($data['status'], ['delivered', 'failed'], true) && $delivery->delivery_agent_id) {
+            DeliveryAgent::where('id', $delivery->delivery_agent_id)->update(['status' => 'available']);
+        }
 
         return back()->with('status', 'Delivery status updated.');
     }

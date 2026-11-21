@@ -40,8 +40,8 @@
                 @endif
 
                 <div class="flex items-center gap-2 mt-2">
-                    <span class="text-sm text-sun-600">&#9733; {{ $averageRating ?: '—' }}</span>
-                    <span class="text-sm text-gray-400">({{ trans_choice(':count review|:count reviews', $reviews->total(), ['count' => $reviews->total()]) }})</span>
+                    <span class="text-sm text-sun-800">&#9733; {{ $averageRating ?: '—' }}</span>
+                    <span class="text-sm text-gray-500">({{ trans_choice(':count review|:count reviews', $reviews->total(), ['count' => $reviews->total()]) }})</span>
                 </div>
 
                 @if($product->translated('short_description'))
@@ -67,12 +67,12 @@
                 <div class="flex flex-wrap items-baseline gap-x-3 mt-5">
                     <span class="text-3xl font-bold text-gray-900">₹{{ number_format($price, 2) }}</span>
                     @if($discount > 0)
-                        <span class="text-lg text-gray-400 line-through">₹{{ number_format($mrp, 2) }}</span>
+                        <span class="text-lg text-gray-500 line-through">₹{{ number_format($mrp, 2) }}</span>
                     @endif
                     <span class="text-sm text-gray-500">{{ __('Taxes applied at checkout') }}</span>
                 </div>
 
-                <p class="text-sm font-medium mt-2 {{ $stock <= 0 ? 'text-red-600' : ($stock <= 10 ? 'text-amber-600' : 'text-fresh-700') }}">
+                <p class="text-sm font-medium mt-2 {{ $stock <= 0 ? 'text-red-600' : ($stock <= 10 ? 'text-amber-700' : 'text-fresh-700') }}">
                     @if($stock <= 0)
                         {{ __('Out of stock') }}
                     @elseif($stock <= 10)
@@ -133,7 +133,7 @@
                 <form action="{{ route('products.reviews.store', $product) }}" method="POST" class="bg-white border border-gray-200 rounded-lg p-4 mb-6">
                     @csrf
                     <p class="text-sm font-medium text-gray-900 mb-2">{{ __('Write a review') }}</p>
-                    <select name="rating" class="rounded-md border-gray-300 text-sm mb-2" required>
+                    <select name="rating" aria-label="{{ __('Rating') }}" class="rounded-md border-gray-300 text-sm mb-2" required>
                         <option value="">{{ __('Rating') }}</option>
                         @for($i = 5; $i >= 1; $i--)
                             <option value="{{ $i }}">{{ trans_choice(':count star|:count stars', $i, ['count' => $i]) }}</option>
@@ -148,7 +148,7 @@
             @forelse($reviews as $review)
                 <div class="border-b border-gray-100 py-4">
                     <div class="flex items-center gap-2">
-                        <span class="text-sun-600 text-sm">{{ str_repeat('★', $review->rating) }}{{ str_repeat('☆', 5 - $review->rating) }}</span>
+                        <span class="text-sun-800 text-sm">{{ str_repeat('★', $review->rating) }}{{ str_repeat('☆', 5 - $review->rating) }}</span>
                         @if($review->is_verified_purchase)
                             <span class="text-xs text-brand-700 bg-brand-50 px-2 py-0.5 rounded">{{ __('Verified Purchase') }}</span>
                         @endif

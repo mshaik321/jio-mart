@@ -21,6 +21,15 @@
             <span class="text-sm px-3 py-1 rounded-full bg-gray-100 text-gray-700 font-medium">{{ $order->status->label() }}</span>
         </div>
 
+        @if($order->delivery)
+            <div class="mb-6 rounded-lg border border-gray-200 bg-white p-4 text-sm">
+                <p class="font-semibold text-gray-900">{{ __('Delivery') }}: {{ __(ucfirst(str_replace('_', ' ', $order->delivery->status->value))) }}</p>
+                @if($order->delivery->agent)
+                    <p class="mt-1 text-gray-600">{{ __('Delivery partner') }}: {{ $order->delivery->agent->name }}</p>
+                @endif
+            </div>
+        @endif
+
         <div class="bg-white border border-gray-200 rounded-lg p-5 mb-6">
             <h2 class="font-semibold text-gray-900 mb-3">{{ __('Items') }}</h2>
             @foreach($order->items as $item)
