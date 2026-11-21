@@ -14,12 +14,12 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans text-gray-900 antialiased bg-emerald-50 dark:bg-gray-900">
+    <body class="font-sans text-gray-900 antialiased bg-brand-50 dark:bg-gray-900">
         <div class="min-h-screen flex flex-col">
             <header class="w-full max-w-5xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
-                <a href="{{ route('home') }}" wire:navigate class="flex items-center gap-2 text-xl font-bold tracking-tight text-emerald-800 dark:text-emerald-300">
-                    <x-application-logo class="h-8 w-8 fill-current text-emerald-700 dark:text-emerald-400" />
-                    <span>Grocery<span class="text-emerald-500">Hub</span></span>
+                <a href="{{ route('home') }}" wire:navigate class="flex items-center gap-2 text-xl font-bold tracking-tight text-brand-800 dark:text-sun-300">
+                    <x-application-logo class="h-8 w-8 fill-current text-brand-700 dark:text-sun-400" />
+                    <span>Grocery<span class="text-fresh-600">Hub</span></span>
                 </a>
 
                 <x-language-switcher />

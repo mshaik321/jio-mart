@@ -11,9 +11,9 @@
 <x-layouts.storefront :title="$name.' — GroceryHub'">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <nav class="text-sm text-gray-500 mb-4" aria-label="{{ __('Breadcrumb') }}">
-            <a href="{{ route('home') }}" wire:navigate class="hover:text-emerald-700">{{ __('Home') }}</a>
+            <a href="{{ route('home') }}" wire:navigate class="hover:text-brand-800">{{ __('Home') }}</a>
             <span class="mx-1">/</span>
-            <a href="{{ route('categories.show', $product->category->slug) }}" wire:navigate class="hover:text-emerald-700">{{ $product->category->translated('name') }}</a>
+            <a href="{{ route('categories.show', $product->category->slug) }}" wire:navigate class="hover:text-brand-800">{{ $product->category->translated('name') }}</a>
             <span class="mx-1">/</span>
             <span class="text-gray-900">{{ $name }}</span>
         </nav>
@@ -21,7 +21,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div class="relative bg-white border border-gray-200 rounded-xl aspect-square flex items-center justify-center overflow-hidden">
                 @if($discount > 0)
-                    <span class="absolute left-3 top-3 rounded-md bg-amber-400 px-2 py-1 text-xs font-bold text-emerald-950">{{ __(':percent% OFF', ['percent' => $discount]) }}</span>
+                    <span class="absolute left-3 top-3 rounded-md bg-sun-300 px-2 py-1 text-xs font-bold text-gray-900">{{ __(':percent% OFF', ['percent' => $discount]) }}</span>
                 @endif
                 @if($image)
                     <img src="{{ $image->url() }}" alt="{{ $name }}" width="600" height="600" class="object-cover w-full h-full">
@@ -32,7 +32,7 @@
 
             <div>
                 @if($product->brand)
-                    <p class="text-sm text-emerald-700 font-medium">{{ $product->brand->name }}</p>
+                    <p class="text-sm text-brand-700 font-medium">{{ $product->brand->name }}</p>
                 @endif
                 <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mt-1">{{ $name }}</h1>
                 @if($alternateName)
@@ -40,7 +40,7 @@
                 @endif
 
                 <div class="flex items-center gap-2 mt-2">
-                    <span class="text-sm text-amber-500">&#9733; {{ $averageRating ?: '—' }}</span>
+                    <span class="text-sm text-sun-600">&#9733; {{ $averageRating ?: '—' }}</span>
                     <span class="text-sm text-gray-400">({{ trans_choice(':count review|:count reviews', $reviews->total(), ['count' => $reviews->total()]) }})</span>
                 </div>
 
@@ -54,7 +54,7 @@
                         <div class="flex flex-wrap gap-2">
                             @foreach($product->variants as $v)
                                 <a href="{{ route('products.show', [$product->slug, 'variant' => $v->id]) }}"
-                                   class="px-3 py-1.5 rounded-md border text-sm {{ $v->id === $variant->id ? 'border-emerald-700 bg-emerald-50 text-emerald-800 font-semibold' : 'border-gray-300 text-gray-700 hover:border-emerald-400' }}">
+                                   class="px-3 py-1.5 rounded-md border text-sm {{ $v->id === $variant->id ? 'border-brand-600 bg-fresh-50 text-fresh-800 font-semibold' : 'border-gray-300 text-gray-700 hover:border-brand-600' }}">
                                     {{ $v->variant_name }} &middot; ₹{{ number_format((float) $v->selling_price, 2) }}
                                 </a>
                             @endforeach
@@ -72,7 +72,7 @@
                     <span class="text-sm text-gray-500">{{ __('Taxes applied at checkout') }}</span>
                 </div>
 
-                <p class="text-sm font-medium mt-2 {{ $stock <= 0 ? 'text-red-600' : ($stock <= 10 ? 'text-amber-600' : 'text-emerald-700') }}">
+                <p class="text-sm font-medium mt-2 {{ $stock <= 0 ? 'text-red-600' : ($stock <= 10 ? 'text-amber-600' : 'text-fresh-700') }}">
                     @if($stock <= 0)
                         {{ __('Out of stock') }}
                     @elseif($stock <= 10)
@@ -117,7 +117,7 @@
             <h2 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Customer Reviews') }}</h2>
 
             @if(session('status'))
-                <div class="bg-emerald-50 text-emerald-800 text-sm rounded-md p-3 mb-4">{{ session('status') }}</div>
+                <div class="bg-fresh-50 text-fresh-800 text-sm rounded-md p-3 mb-4">{{ session('status') }}</div>
             @endif
             @if($errors->any())
                 <div class="bg-red-50 text-red-700 text-sm rounded-md p-3 mb-4">
@@ -141,16 +141,16 @@
                     </select>
                     <input type="text" name="title" placeholder="{{ __('Title (optional)') }}" class="w-full rounded-md border-gray-300 text-sm mb-2">
                     <textarea name="body" rows="3" placeholder="{{ __('Share your experience (optional)') }}" class="w-full rounded-md border-gray-300 text-sm"></textarea>
-                    <button type="submit" class="mt-2 bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-semibold px-4 py-2 rounded-md">{{ __('Submit Review') }}</button>
+                    <button type="submit" class="mt-2 bg-fresh-600 hover:bg-fresh-700 text-white text-sm font-semibold px-4 py-2 rounded-md">{{ __('Submit Review') }}</button>
                 </form>
             @endauth
 
             @forelse($reviews as $review)
                 <div class="border-b border-gray-100 py-4">
                     <div class="flex items-center gap-2">
-                        <span class="text-amber-500 text-sm">{{ str_repeat('★', $review->rating) }}{{ str_repeat('☆', 5 - $review->rating) }}</span>
+                        <span class="text-sun-600 text-sm">{{ str_repeat('★', $review->rating) }}{{ str_repeat('☆', 5 - $review->rating) }}</span>
                         @if($review->is_verified_purchase)
-                            <span class="text-xs text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">{{ __('Verified Purchase') }}</span>
+                            <span class="text-xs text-brand-700 bg-brand-50 px-2 py-0.5 rounded">{{ __('Verified Purchase') }}</span>
                         @endif
                     </div>
                     @if($review->title)

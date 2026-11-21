@@ -6,7 +6,7 @@
         @endif
 
         @guest
-            <p class="text-gray-500">{{ __('Please log in to view your wishlist.') }} <a href="{{ route('login') }}" class="text-emerald-700 underline">{{ __('Log in') }}</a></p>
+            <p class="text-gray-500">{{ __('Please log in to view your wishlist.') }} <a href="{{ route('login') }}" class="text-brand-700 underline">{{ __('Log in') }}</a></p>
         @else
             @if($items->isEmpty())
                 <p class="text-gray-500">{{ __('Your wishlist is empty.') }}</p>
@@ -24,7 +24,7 @@
                                 <p class="text-xs text-gray-500">{{ $item->variant->variant_name }}</p>
                                 <p class="font-bold text-gray-900 mt-1">₹{{ number_format((float) $item->variant->selling_price, 2) }}</p>
                                 <div class="flex gap-2 mt-2">
-                                    <button wire:click="moveToCart({{ $item->id }})" class="text-xs bg-emerald-700 hover:bg-emerald-800 text-white px-3 py-1.5 rounded-md">{{ __('Move to Cart') }}</button>
+                                    <button wire:click="moveToCart({{ $item->id }})" class="text-xs bg-fresh-600 hover:bg-fresh-700 text-white px-3 py-1.5 rounded-md">{{ __('Move to Cart') }}</button>
                                     <button wire:click="remove({{ $item->id }})" class="text-xs text-gray-500 hover:text-red-600 px-3 py-1.5">{{ __('Remove') }}</button>
                                 </div>
                             </div>

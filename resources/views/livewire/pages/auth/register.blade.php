@@ -192,6 +192,6 @@ new #[Layout('layouts.guest')] class extends Component
 
     <p class="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
         {{ __('Already have an account?') }}
-        <a href="{{ route('login') }}" wire:navigate class="font-semibold text-emerald-700 hover:text-emerald-800 dark:text-emerald-400">{{ __('Log in') }}</a>
+        <a href="{{ route('login') }}" wire:navigate class="font-semibold text-brand-700 hover:text-brand-800 dark:text-sun-400">{{ __('Log in') }}</a>
     </p>
 </div>

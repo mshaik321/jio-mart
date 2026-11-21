@@ -13,7 +13,7 @@
                         <td class="px-4 py-2">{{ $return->customer->user->name ?? '—' }}</td>
                         <td class="px-4 py-2">{{ ucfirst($return->status->value) }}</td>
                         <td class="px-4 py-2 text-right">
-                            <a href="{{ route('admin.returns.show', $return) }}" class="text-emerald-700 hover:underline">View</a>
+                            <a href="{{ route('admin.returns.show', $return) }}" class="text-brand-700 hover:underline">View</a>
                         </td>
                     </tr>
                 @endforeach

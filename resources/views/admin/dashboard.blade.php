@@ -21,7 +21,7 @@
         @if($canSeeOrders)
         <div class="bg-white rounded-lg border border-gray-200 p-4">
             <p class="text-xs text-gray-500">Delivered Orders</p>
-            <p class="text-2xl font-bold text-emerald-700">{{ $deliveredOrders }}</p>
+            <p class="text-2xl font-bold text-brand-700">{{ $deliveredOrders }}</p>
         </div>
         @endif
         @if($canSeeOrders)
@@ -55,7 +55,7 @@
                 <tbody>
                     @foreach($recentOrders as $order)
                         <tr class="border-t border-gray-100">
-                            <td class="py-2"><a href="{{ route('admin.orders.show', $order) }}" class="text-emerald-700 hover:underline">{{ $order->order_number }}</a></td>
+                            <td class="py-2"><a href="{{ route('admin.orders.show', $order) }}" class="text-brand-700 hover:underline">{{ $order->order_number }}</a></td>
                             <td class="py-2">{{ $order->customer->user->name ?? '—' }}</td>
                             <td class="py-2">₹{{ number_format((float) $order->grand_total, 2) }}</td>
                             <td class="py-2">{{ $order->status->label() }}</td>

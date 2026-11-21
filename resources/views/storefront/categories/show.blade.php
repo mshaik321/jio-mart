@@ -1,7 +1,7 @@
 <x-layouts.storefront :title="$category->translated('name').' — GroceryHub'">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <nav class="text-sm text-gray-500 mb-3" aria-label="{{ __('Breadcrumb') }}">
-            <a href="{{ route('home') }}" wire:navigate class="hover:text-emerald-700">{{ __('Home') }}</a>
+            <a href="{{ route('home') }}" wire:navigate class="hover:text-brand-800">{{ __('Home') }}</a>
             <span class="mx-1">/</span>
             <span class="text-gray-900">{{ $category->translated('name') }}</span>
         </nav>

@@ -82,7 +82,7 @@
         <div class="bg-white border border-gray-200 rounded-lg p-5">
             <h3 class="font-semibold text-gray-900 mb-3">Inventory</h3>
             <p class="text-sm text-gray-700">Low stock items: <span class="font-bold text-red-600">{{ $lowStockCount }}</span></p>
-            <a href="{{ route('admin.inventory.index', ['low_stock' => 1]) }}" class="text-sm text-emerald-700 underline">View low stock items</a>
+            <a href="{{ route('admin.inventory.index', ['low_stock' => 1]) }}" class="text-sm text-brand-700 underline">View low stock items</a>
         </div>
     </div>
 </x-layouts.admin>

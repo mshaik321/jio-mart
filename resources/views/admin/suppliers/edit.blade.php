@@ -3,6 +3,6 @@
     <form action="{{ route('admin.suppliers.update', $supplier) }}" method="POST" class="bg-white border border-gray-200 rounded-lg p-5 space-y-4 max-w-lg">
         @csrf @method('PUT')
         @include('admin.suppliers._form')
-        <button type="submit" class="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold px-4 py-2 rounded-md text-sm">Update Supplier</button>
+        <button type="submit" class="bg-fresh-600 hover:bg-fresh-700 text-white font-semibold px-4 py-2 rounded-md text-sm">Update Supplier</button>
     </form>
 </x-layouts.admin>

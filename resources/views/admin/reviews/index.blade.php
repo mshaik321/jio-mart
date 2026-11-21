@@ -29,7 +29,7 @@
                                     <form action="{{ route('admin.reviews.moderate', $review) }}" method="POST" class="inline">
                                         @csrf
                                         <input type="hidden" name="status" value="approved">
-                                        <button type="submit" class="text-emerald-700 hover:underline">Approve</button>
+                                        <button type="submit" class="text-brand-700 hover:underline">Approve</button>
                                     </form>
                                 @endif
                                 @if($review->status->value !== 'rejected')

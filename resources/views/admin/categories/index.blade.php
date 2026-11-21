@@ -2,7 +2,7 @@
     <div class="flex justify-between items-center mb-4">
         <h2 class="text-lg font-semibold text-gray-900">Categories</h2>
         @can('categories.create')
-            <a href="{{ route('admin.categories.create') }}" class="bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-semibold px-4 py-2 rounded-md">+ New Category</a>
+            <a href="{{ route('admin.categories.create') }}" class="bg-fresh-600 hover:bg-fresh-700 text-white text-sm font-semibold px-4 py-2 rounded-md">+ New Category</a>
         @endcan
     </div>
 
@@ -26,7 +26,7 @@
                         <td class="px-4 py-2">{{ $category->sort_order }}</td>
                         <td class="px-4 py-2 text-right space-x-2">
                             @can('categories.update')
-                                <a href="{{ route('admin.categories.edit', $category) }}" class="text-emerald-700 hover:underline">Edit</a>
+                                <a href="{{ route('admin.categories.edit', $category) }}" class="text-brand-700 hover:underline">Edit</a>
                             @endcan
                             @can('categories.delete')
                                 <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="inline" onsubmit="return confirm('Delete this category?');">

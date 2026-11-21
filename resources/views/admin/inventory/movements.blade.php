@@ -13,7 +13,7 @@
                     <tr class="border-t border-gray-100">
                         <td class="px-4 py-2 text-gray-500">{{ $movement->created_at->format('d M Y, h:i A') }}</td>
                         <td class="px-4 py-2">{{ $movement->type->value }}</td>
-                        <td class="px-4 py-2 {{ $movement->quantity < 0 ? 'text-red-600' : 'text-emerald-700' }}">{{ $movement->quantity > 0 ? '+' : '' }}{{ $movement->quantity }}</td>
+                        <td class="px-4 py-2 {{ $movement->quantity < 0 ? 'text-red-600' : 'text-brand-700' }}">{{ $movement->quantity > 0 ? '+' : '' }}{{ $movement->quantity }}</td>
                         <td class="px-4 py-2">{{ $movement->balance_after }}</td>
                         <td class="px-4 py-2">{{ $movement->warehouse->name }}</td>
                         <td class="px-4 py-2 text-gray-500">{{ $movement->note }}</td>

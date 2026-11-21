@@ -21,7 +21,7 @@
                    class="fixed inset-y-0 left-0 z-50 w-64 -translate-x-full bg-gray-900 text-gray-200 flex flex-col transition-transform duration-200 ease-in-out lg:static lg:z-auto lg:translate-x-0 lg:flex-shrink-0">
                 <div class="h-16 flex items-center justify-between gap-2 px-5 text-white font-bold text-lg border-b border-gray-800">
                     GroceryHub Admin
-                    <button type="button" @click="sidebarOpen = false" class="lg:hidden -mr-2 rounded-md p-2 text-gray-400 hover:bg-gray-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500" aria-label="Close menu">
+                    <button type="button" @click="sidebarOpen = false" class="lg:hidden -mr-2 rounded-md p-2 text-gray-400 hover:bg-gray-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-brand-500" aria-label="Close menu">
                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>
                     </button>
                 </div>
@@ -72,7 +72,7 @@
                             @php([$routeName, $label] = $link)
                             @if(true)
                                 <a href="{{ route($routeName) }}"
-                                   class="block px-5 py-2 {{ request()->routeIs($routeName.'*') ? 'bg-emerald-700 text-white' : 'hover:bg-gray-800' }}">
+                                   class="block px-5 py-2 {{ request()->routeIs($routeName.'*') ? 'bg-brand-700 text-white' : 'hover:bg-gray-800' }}">
                                     {{ $label }}
                                 </a>
                             @endif
@@ -82,7 +82,7 @@
                 <div class="border-t border-gray-800 p-4 text-xs">
                     <p class="text-gray-400">{{ auth()->user()->name }}</p>
                     <div class="flex justify-between mt-2">
-                        <a href="{{ route('home') }}" class="text-emerald-400 hover:underline">View Store</a>
+                        <a href="{{ route('home') }}" class="text-sun-400 hover:underline">View Store</a>
                         <form action="{{ route('logout') }}" method="POST">
                             @csrf
                             <button type="submit" class="text-gray-400 hover:text-white">Log Out</button>
@@ -94,7 +94,7 @@
             <div class="flex-1 min-w-0">
                 <header class="bg-white border-b border-gray-200 h-16 flex items-center gap-3 px-4 sm:px-6">
                     <button type="button" @click="sidebarOpen = true" :aria-expanded="sidebarOpen.toString()" aria-controls="admin-sidebar"
-                            class="lg:hidden -ml-2 rounded-md p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500" aria-label="Open menu">
+                            class="lg:hidden -ml-2 rounded-md p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500" aria-label="Open menu">
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
                     </button>
                     <h1 class="text-lg font-semibold text-gray-900 truncate">{{ $title ?? 'Dashboard' }}</h1>
@@ -102,7 +102,7 @@
 
                 <main class="p-4 sm:p-6">
                     @if(session('status'))
-                        <div class="bg-emerald-50 text-emerald-800 text-sm rounded-md p-3 mb-4">{{ session('status') }}</div>
+                        <div class="bg-fresh-50 text-fresh-800 text-sm rounded-md p-3 mb-4">{{ session('status') }}</div>
                     @endif
                     @if($errors->any())
                         <div class="bg-red-50 text-red-700 text-sm rounded-md p-3 mb-4">

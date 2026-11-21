@@ -22,6 +22,6 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">Default Low Stock Threshold</label>
             <input type="number" name="low_stock_threshold_default" value="{{ old('low_stock_threshold_default', $settings['low_stock_threshold_default']) }}" class="w-full rounded-md border-gray-300 text-sm">
         </div>
-        <button type="submit" class="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold px-4 py-2 rounded-md text-sm">Save Settings</button>
+        <button type="submit" class="bg-fresh-600 hover:bg-fresh-700 text-white font-semibold px-4 py-2 rounded-md text-sm">Save Settings</button>
     </form>
 </x-layouts.admin>

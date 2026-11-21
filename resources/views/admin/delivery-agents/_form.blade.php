@@ -19,5 +19,5 @@
     </div>
 </div>
 <label class="flex items-center gap-2 text-sm text-gray-700">
-    <input type="checkbox" name="is_active" value="1" @checked($old('is_active', true)) class="rounded border-gray-300 text-emerald-700"> Active
+    <input type="checkbox" name="is_active" value="1" @checked($old('is_active', true)) class="rounded border-gray-300 text-brand-700"> Active
 </label>

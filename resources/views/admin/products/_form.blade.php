@@ -105,12 +105,12 @@
 
 <div class="flex gap-6">
     <label class="flex items-center gap-2 text-sm text-gray-700">
-        <input type="checkbox" name="is_featured" value="1" @checked($old('is_featured', false)) class="rounded border-gray-300 text-emerald-700"> Featured
+        <input type="checkbox" name="is_featured" value="1" @checked($old('is_featured', false)) class="rounded border-gray-300 text-brand-700"> Featured
     </label>
     <label class="flex items-center gap-2 text-sm text-gray-700">
-        <input type="checkbox" name="is_bestseller" value="1" @checked($old('is_bestseller', false)) class="rounded border-gray-300 text-emerald-700"> Bestseller
+        <input type="checkbox" name="is_bestseller" value="1" @checked($old('is_bestseller', false)) class="rounded border-gray-300 text-brand-700"> Bestseller
     </label>
     <label class="flex items-center gap-2 text-sm text-gray-700">
-        <input type="checkbox" name="is_new_arrival" value="1" @checked($old('is_new_arrival', false)) class="rounded border-gray-300 text-emerald-700"> New Arrival
+        <input type="checkbox" name="is_new_arrival" value="1" @checked($old('is_new_arrival', false)) class="rounded border-gray-300 text-brand-700"> New Arrival
     </label>
 </div>

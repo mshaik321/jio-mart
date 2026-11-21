@@ -4,7 +4,7 @@
     <form method="GET" class="mb-4 flex gap-3">
         <input type="text" name="q" value="{{ request('q') }}" placeholder="Search products..." class="rounded-md border-gray-300 text-sm w-64">
         <label class="flex items-center gap-2 text-sm text-gray-700">
-            <input type="checkbox" name="low_stock" value="1" @checked(request('low_stock')) onchange="this.form.submit()" class="rounded border-gray-300 text-emerald-700">
+            <input type="checkbox" name="low_stock" value="1" @checked(request('low_stock')) onchange="this.form.submit()" class="rounded border-gray-300 text-brand-700">
             Low stock only
         </label>
     </form>
@@ -52,7 +52,7 @@
                         <td class="px-4 py-2">{{ $inventory->quantity_reserved }}</td>
                         <td class="px-4 py-2 font-semibold {{ $inventory->isLowStock() ? 'text-red-600' : 'text-gray-900' }}">{{ $inventory->availableQuantity() }}</td>
                         <td class="px-4 py-2 text-right">
-                            <a href="{{ route('admin.inventory.movements', $inventory->variant) }}" class="text-emerald-700 hover:underline">History</a>
+                            <a href="{{ route('admin.inventory.movements', $inventory->variant) }}" class="text-brand-700 hover:underline">History</a>
                         </td>
                     </tr>
                 @endforeach

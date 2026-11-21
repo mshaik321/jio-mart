@@ -30,7 +30,7 @@
             @if($orderReturn->status->value === 'requested')
                 <form action="{{ route('admin.returns.approve', $orderReturn) }}" method="POST">
                     @csrf
-                    <button type="submit" class="bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-semibold px-4 py-2 rounded-md">Approve</button>
+                    <button type="submit" class="bg-fresh-600 hover:bg-fresh-700 text-white text-sm font-semibold px-4 py-2 rounded-md">Approve</button>
                 </form>
                 <form action="{{ route('admin.returns.reject', $orderReturn) }}" method="POST">
                     @csrf
@@ -43,7 +43,7 @@
                         <label class="block text-xs text-gray-600 mb-1">Refund Amount</label>
                         <input type="number" step="0.01" name="refund_amount" value="{{ $orderReturn->order->grand_total }}" class="rounded-md border-gray-300 text-sm">
                     </div>
-                    <button type="submit" class="bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-semibold px-4 py-2 rounded-md">Complete &amp; Restock</button>
+                    <button type="submit" class="bg-fresh-600 hover:bg-fresh-700 text-white text-sm font-semibold px-4 py-2 rounded-md">Complete &amp; Restock</button>
                 </form>
             @endif
         @endcan

@@ -2,7 +2,7 @@
     <div class="flex justify-between items-center mb-4">
         <h2 class="text-lg font-semibold text-gray-900">Purchase Orders</h2>
         @can('purchases.create')
-            <a href="{{ route('admin.purchase-orders.create') }}" class="bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-semibold px-4 py-2 rounded-md">+ New Purchase Order</a>
+            <a href="{{ route('admin.purchase-orders.create') }}" class="bg-fresh-600 hover:bg-fresh-700 text-white text-sm font-semibold px-4 py-2 rounded-md">+ New Purchase Order</a>
         @endcan
     </div>
     <div class="bg-white rounded-lg border border-gray-200 overflow-x-auto">
@@ -19,7 +19,7 @@
                         <td class="px-4 py-2">₹{{ number_format((float) $po->total_amount, 2) }}</td>
                         <td class="px-4 py-2">{{ ucfirst(str_replace('_', ' ', $po->status->value)) }}</td>
                         <td class="px-4 py-2 text-right">
-                            <a href="{{ route('admin.purchase-orders.show', $po) }}" class="text-emerald-700 hover:underline">View</a>
+                            <a href="{{ route('admin.purchase-orders.show', $po) }}" class="text-brand-700 hover:underline">View</a>
                         </td>
                     </tr>
                 @endforeach

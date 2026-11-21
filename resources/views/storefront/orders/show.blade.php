@@ -1,7 +1,7 @@
 <x-layouts.storefront :title="$order->order_number.' — GroceryHub'">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         @if(session('status'))
-            <div class="bg-emerald-50 text-emerald-800 text-sm rounded-md p-3 mb-4">{{ session('status') }}</div>
+            <div class="bg-fresh-50 text-fresh-800 text-sm rounded-md p-3 mb-4">{{ session('status') }}</div>
         @endif
         @if($errors->any())
             <div class="bg-red-50 text-red-700 text-sm rounded-md p-3 mb-4">
@@ -77,7 +77,7 @@
                             </label>
                         @endforeach
                         <input type="text" name="reason" placeholder="{{ __('Reason for return') }}" class="w-full rounded-md border-gray-300 text-sm mt-2" required>
-                        <button type="submit" class="mt-3 bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-semibold px-4 py-2 rounded-md">{{ __('Submit Return Request') }}</button>
+                        <button type="submit" class="mt-3 bg-fresh-600 hover:bg-fresh-700 text-white text-sm font-semibold px-4 py-2 rounded-md">{{ __('Submit Return Request') }}</button>
                     </form>
                 </details>
             @endif

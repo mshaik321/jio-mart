@@ -3,7 +3,7 @@
         <h1 class="text-2xl font-bold text-gray-900 mb-6">{{ __('My Orders') }}</h1>
 
         @if(session('status'))
-            <div class="bg-emerald-50 text-emerald-800 text-sm rounded-md p-3 mb-4">{{ session('status') }}</div>
+            <div class="bg-fresh-50 text-fresh-800 text-sm rounded-md p-3 mb-4">{{ session('status') }}</div>
         @endif
 
         @if($orders->isEmpty())

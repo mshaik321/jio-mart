@@ -60,7 +60,7 @@ new #[Layout('layouts.guest')] class extends Component
             <div class="flex items-center justify-between gap-2">
                 <x-input-label for="password" :value="__('Password')" />
                 @if (Route::has('password.request'))
-                    <a class="text-sm font-medium text-emerald-700 hover:text-emerald-800 dark:text-emerald-400 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500" href="{{ route('password.request') }}" wire:navigate>
+                    <a class="text-sm font-medium text-brand-700 hover:text-brand-800 dark:text-sun-400 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500" href="{{ route('password.request') }}" wire:navigate>
                         {{ __('Forgot password?') }}
                     </a>
                 @endif
@@ -76,7 +76,7 @@ new #[Layout('layouts.guest')] class extends Component
 
         <!-- Remember Me -->
         <label for="remember" class="inline-flex items-center">
-            <input wire:model="form.remember" id="remember" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-emerald-700 shadow-sm focus:ring-emerald-500 dark:focus:ring-offset-gray-800" name="remember">
+            <input wire:model="form.remember" id="remember" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-brand-700 shadow-sm focus:ring-brand-500 dark:focus:ring-offset-gray-800" name="remember">
             <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
         </label>
 
@@ -87,6 +87,6 @@ new #[Layout('layouts.guest')] class extends Component
 
     <p class="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
         {{ __('New to GroceryHub?') }}
-        <a href="{{ route('register') }}" wire:navigate class="font-semibold text-emerald-700 hover:text-emerald-800 dark:text-emerald-400">{{ __('Create an account') }}</a>
+        <a href="{{ route('register') }}" wire:navigate class="font-semibold text-brand-700 hover:text-brand-800 dark:text-sun-400">{{ __('Create an account') }}</a>
     </p>
 </div>

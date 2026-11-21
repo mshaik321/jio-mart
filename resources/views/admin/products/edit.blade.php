@@ -4,7 +4,7 @@
     <form action="{{ route('admin.products.update', $product) }}" method="POST" class="bg-white border border-gray-200 rounded-lg p-5 space-y-4 max-w-3xl mb-8">
         @csrf @method('PUT')
         @include('admin.products._form')
-        <button type="submit" class="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold px-4 py-2 rounded-md text-sm">Update Product</button>
+        <button type="submit" class="bg-fresh-600 hover:bg-fresh-700 text-white font-semibold px-4 py-2 rounded-md text-sm">Update Product</button>
     </form>
 
     <div class="max-w-3xl mb-8">
@@ -13,7 +13,7 @@
         <div class="flex gap-3 flex-wrap mb-4">
             @foreach($product->images as $image)
                 <div class="relative group">
-                    <img src="{{ $image->url() }}" class="h-24 w-24 object-cover rounded-md border {{ $image->is_primary ? 'border-emerald-500 ring-2 ring-emerald-300' : 'border-gray-200' }}">
+                    <img src="{{ $image->url() }}" class="h-24 w-24 object-cover rounded-md border {{ $image->is_primary ? 'border-brand-600 ring-2 ring-brand-500' : 'border-gray-200' }}">
                     <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-1 rounded-md">
                         @if(! $image->is_primary)
                             <form action="{{ route('admin.products.images.primary', [$product, $image]) }}" method="POST">
@@ -37,7 +37,7 @@
                 <input type="file" name="image" accept="image/png,image/jpeg,image/webp" class="text-sm" required>
             </div>
             <label class="flex items-center gap-1 text-xs text-gray-700">
-                <input type="checkbox" name="is_primary" value="1" class="rounded border-gray-300 text-emerald-700"> Primary
+                <input type="checkbox" name="is_primary" value="1" class="rounded border-gray-300 text-brand-700"> Primary
             </label>
             <button type="submit" class="bg-gray-800 hover:bg-gray-900 text-white text-sm font-semibold px-4 py-2 rounded-md">Upload</button>
         </form>
@@ -97,7 +97,7 @@
                 </div>
                 <div class="col-span-1 flex items-center gap-2">
                     <label class="flex items-center gap-1 text-xs text-gray-700">
-                        <input type="checkbox" name="is_default" value="1" class="rounded border-gray-300 text-emerald-700"> Default
+                        <input type="checkbox" name="is_default" value="1" class="rounded border-gray-300 text-brand-700"> Default
                     </label>
                 </div>
                 <div class="col-span-6">

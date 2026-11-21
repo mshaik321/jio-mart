@@ -13,7 +13,7 @@
                     <label class="flex items-center gap-2 text-sm text-gray-700">
                         <input type="checkbox" name="brands[]" value="{{ $brand->id }}"
                             @checked(in_array($brand->id, (array) request('brands', [])))
-                            class="rounded border-gray-300 text-emerald-700">
+                            class="rounded border-gray-300 text-brand-700">
                         {{ $brand->name }}
                     </label>
                 @endforeach
@@ -30,7 +30,7 @@
     </div>
 
     <label class="flex items-center gap-2 text-sm text-gray-700">
-        <input type="checkbox" name="in_stock" value="1" @checked(request('in_stock')) class="rounded border-gray-300 text-emerald-700">
+        <input type="checkbox" name="in_stock" value="1" @checked(request('in_stock')) class="rounded border-gray-300 text-brand-700">
         {{ __('In stock only') }}
     </label>
 
@@ -44,7 +44,7 @@
         </select>
     </div>
 
-    <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-semibold py-2 rounded-md">
+    <button type="submit" class="w-full bg-fresh-600 hover:bg-fresh-700 text-white text-sm font-semibold py-2 rounded-md">
         {{ __('Apply Filters') }}
     </button>
 </form>

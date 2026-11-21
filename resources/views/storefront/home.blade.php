@@ -1,17 +1,17 @@
 <x-layouts.storefront :title="__('GroceryHub — Fresh groceries, delivered')">
-    <section class="bg-gradient-to-br from-emerald-700 via-emerald-700 to-emerald-800 text-white">
+    <section class="bg-gradient-to-br from-brand-700 via-brand-700 to-brand-800 text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
             <div class="max-w-2xl">
                 <h1 class="text-3xl sm:text-4xl font-bold leading-tight">{{ __('Fresh groceries, delivered fast.') }}</h1>
-                <p class="mt-3 text-emerald-100 sm:text-lg">{{ __('Dals, rice, atta, spices, dry fruits and daily essentials — in English and తెలుగు.') }}</p>
+                <p class="mt-3 text-brand-100 sm:text-lg">{{ __('Dals, rice, atta, spices, dry fruits and daily essentials — in English and తెలుగు.') }}</p>
 
                 <form action="{{ route('search') }}" method="GET" role="search" class="mt-6 flex max-w-xl rounded-lg bg-white p-1 shadow-lg">
                     <input type="search" name="q" aria-label="{{ __('Search products') }}" placeholder="{{ __('Try “toor dal” or “కందిపప్పు”') }}"
-                        class="w-full min-w-0 rounded-md border-0 px-3 py-2.5 text-gray-900 focus:ring-2 focus:ring-emerald-400">
-                    <button type="submit" class="shrink-0 rounded-md bg-amber-400 px-5 text-sm font-bold text-emerald-950 hover:bg-amber-300">{{ __('Search') }}</button>
+                        class="w-full min-w-0 rounded-md border-0 px-3 py-2.5 text-gray-900 focus:ring-2 focus:ring-brand-500">
+                    <button type="submit" class="shrink-0 rounded-md bg-sun-300 px-5 text-sm font-bold text-brand-900 hover:bg-sun-400">{{ __('Search') }}</button>
                 </form>
 
-                <ul class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-emerald-50">
+                <ul class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-brand-100">
                     <li class="flex items-center gap-2"><span aria-hidden="true">✓</span> {{ __('Cash on delivery') }}</li>
                     <li class="flex items-center gap-2"><span aria-hidden="true">✓</span> {{ __('Free delivery on eligible orders') }}</li>
                     <li class="flex items-center gap-2"><span aria-hidden="true">✓</span> {{ __('Easy returns') }}</li>
@@ -44,14 +44,14 @@
                 <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-8 gap-3 sm:gap-4">
                     @foreach($categories as $category)
                         <a href="{{ route('categories.show', $category->slug) }}" wire:navigate class="group rounded-xl border border-gray-200 bg-white p-2 sm:p-3 text-center transition-shadow hover:shadow-md">
-                            <div class="aspect-square overflow-hidden rounded-lg bg-emerald-50">
+                            <div class="aspect-square overflow-hidden rounded-lg bg-brand-50">
                                 @if($category->imageUrl())
                                     <img src="{{ $category->imageUrl() }}" alt="" loading="lazy" width="600" height="600" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
                                 @else
-                                    <div class="flex h-full items-center justify-center text-2xl font-bold text-emerald-700">{{ mb_substr($category->translated('name'), 0, 1) }}</div>
+                                    <div class="flex h-full items-center justify-center text-2xl font-bold text-brand-700">{{ mb_substr($category->translated('name'), 0, 1) }}</div>
                                 @endif
                             </div>
-                            <p class="mt-2 text-xs sm:text-sm font-semibold leading-tight text-gray-800 group-hover:text-emerald-700">{{ $category->translated('name') }}</p>
+                            <p class="mt-2 text-xs sm:text-sm font-semibold leading-tight text-gray-800 group-hover:text-brand-800">{{ $category->translated('name') }}</p>
                             @if($category->alternateTranslated('name'))
                                 <p class="text-[11px] leading-tight text-gray-500">{{ $category->alternateTranslated('name') }}</p>
                             @endif
@@ -70,7 +70,7 @@
                 <section aria-labelledby="{{ $rail['id'] }}">
                     <div class="mb-4 flex items-baseline justify-between gap-4">
                         <h2 id="{{ $rail['id'] }}" class="text-lg sm:text-xl font-bold text-gray-900">{{ $rail['title'] }}</h2>
-                        <a href="{{ route('search') }}" wire:navigate class="text-sm font-semibold text-emerald-700 hover:text-emerald-800">{{ __('View all') }} &rarr;</a>
+                        <a href="{{ route('search') }}" wire:navigate class="text-sm font-semibold text-brand-700 hover:text-brand-800">{{ __('View all') }} &rarr;</a>
                     </div>
                     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
                         @foreach($rail['items'] as $variant)

@@ -57,7 +57,7 @@
                             @endforeach
                         </select>
                         <input type="text" name="note" placeholder="Note (optional)" class="w-full rounded-md border-gray-300 text-sm mb-2">
-                        <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-semibold py-2 rounded-md">Update Status</button>
+                        <button type="submit" class="w-full bg-fresh-600 hover:bg-fresh-700 text-white text-sm font-semibold py-2 rounded-md">Update Status</button>
                     </form>
                 </div>
             @endcan

@@ -1,7 +1,7 @@
 <x-layouts.admin title="Delivery Zones">
     <div class="flex justify-between items-center mb-4">
         <h2 class="text-lg font-semibold text-gray-900">Delivery Zones</h2>
-        <a href="{{ route('admin.delivery-zones.create') }}" class="bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-semibold px-4 py-2 rounded-md">+ New Zone</a>
+        <a href="{{ route('admin.delivery-zones.create') }}" class="bg-fresh-600 hover:bg-fresh-700 text-white text-sm font-semibold px-4 py-2 rounded-md">+ New Zone</a>
     </div>
     <div class="bg-white rounded-lg border border-gray-200 overflow-x-auto">
         <table class="w-full text-sm">
@@ -16,7 +16,7 @@
                         <td class="px-4 py-2">₹{{ number_format((float) $zone->delivery_charge, 2) }}</td>
                         <td class="px-4 py-2">{{ $zone->free_delivery_above ? '₹'.number_format((float) $zone->free_delivery_above, 2) : '—' }}</td>
                         <td class="px-4 py-2 text-right space-x-2">
-                            <a href="{{ route('admin.delivery-zones.edit', $zone) }}" class="text-emerald-700 hover:underline">Edit</a>
+                            <a href="{{ route('admin.delivery-zones.edit', $zone) }}" class="text-brand-700 hover:underline">Edit</a>
                             <form action="{{ route('admin.delivery-zones.destroy', $zone) }}" method="POST" class="inline" onsubmit="return confirm('Delete this zone?');">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="text-red-600 hover:underline">Delete</button>

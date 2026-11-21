@@ -46,7 +46,7 @@
 </div>
 
 <label class="flex items-center gap-2 text-sm text-gray-700">
-    <input type="checkbox" name="is_default" value="1" @checked($old('is_default', false)) class="rounded border-gray-300 text-emerald-700">
+    <input type="checkbox" name="is_default" value="1" @checked($old('is_default', false)) class="rounded border-gray-300 text-brand-700">
     {{ __('Set as default address') }}
 </label>
 

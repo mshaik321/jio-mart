@@ -4,7 +4,7 @@
         <form action="{{ route('addresses.store') }}" method="POST" class="bg-white border border-gray-200 rounded-lg p-5 space-y-4">
             @csrf
             @include('storefront.addresses._form', ['address' => null])
-            <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-semibold py-2.5 rounded-md">{{ __('Save Address') }}</button>
+            <button type="submit" class="w-full bg-fresh-600 hover:bg-fresh-700 text-white font-semibold py-2.5 rounded-md">{{ __('Save Address') }}</button>
         </form>
     </div>
 </x-layouts.storefront>

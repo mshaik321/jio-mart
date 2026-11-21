@@ -2,7 +2,7 @@
     <div class="flex justify-between items-center mb-4">
         <h2 class="text-lg font-semibold text-gray-900">Coupons</h2>
         @can('coupons.create')
-            <a href="{{ route('admin.coupons.create') }}" class="bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-semibold px-4 py-2 rounded-md">+ New Coupon</a>
+            <a href="{{ route('admin.coupons.create') }}" class="bg-fresh-600 hover:bg-fresh-700 text-white text-sm font-semibold px-4 py-2 rounded-md">+ New Coupon</a>
         @endcan
     </div>
     <div class="bg-white rounded-lg border border-gray-200 overflow-x-auto">
@@ -20,7 +20,7 @@
                         <td class="px-4 py-2">{{ $coupon->is_active ? 'Yes' : 'No' }}</td>
                         <td class="px-4 py-2 text-right space-x-2">
                             @can('coupons.update')
-                                <a href="{{ route('admin.coupons.edit', $coupon) }}" class="text-emerald-700 hover:underline">Edit</a>
+                                <a href="{{ route('admin.coupons.edit', $coupon) }}" class="text-brand-700 hover:underline">Edit</a>
                             @endcan
                             @can('coupons.delete')
                                 <form action="{{ route('admin.coupons.destroy', $coupon) }}" method="POST" class="inline" onsubmit="return confirm('Delete this coupon?');">

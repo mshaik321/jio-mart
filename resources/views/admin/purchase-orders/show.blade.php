@@ -25,7 +25,7 @@
                             @if($item->remainingQuantity() > 0)
                                 <input type="number" name="receive[{{ $item->id }}]" min="0" max="{{ $item->remainingQuantity() }}" placeholder="0" class="w-24 rounded-md border-gray-300 text-sm">
                             @else
-                                <span class="text-emerald-700 text-xs">Fully received</span>
+                                <span class="text-brand-700 text-xs">Fully received</span>
                             @endif
                         </td>
                     </tr>
@@ -34,7 +34,7 @@
         </table>
         <div class="p-4">
             @can('purchases.update')
-                <button type="submit" class="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold px-4 py-2 rounded-md text-sm">Record Receipt</button>
+                <button type="submit" class="bg-fresh-600 hover:bg-fresh-700 text-white font-semibold px-4 py-2 rounded-md text-sm">Record Receipt</button>
             @endcan
         </div>
     </form>

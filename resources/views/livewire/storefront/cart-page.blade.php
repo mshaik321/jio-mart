@@ -6,7 +6,7 @@
         @endif
 
         @if($cart->items->isEmpty())
-            <p class="text-gray-500">{{ __('Your cart is empty.') }} <a href="{{ route('home') }}" wire:navigate class="text-emerald-700 underline">{{ __('Start shopping') }}</a></p>
+            <p class="text-gray-500">{{ __('Your cart is empty.') }} <a href="{{ route('home') }}" wire:navigate class="text-brand-700 underline">{{ __('Start shopping') }}</a></p>
         @else
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div class="lg:col-span-2 space-y-3">
@@ -37,7 +37,7 @@
                     <h2 class="font-semibold text-gray-900 mb-4">{{ __('Order Summary') }}</h2>
 
                     @if($cart->coupon)
-                        <div class="flex items-center justify-between text-sm mb-2 bg-emerald-50 text-emerald-800 rounded-md px-3 py-2">
+                        <div class="flex items-center justify-between text-sm mb-2 bg-fresh-50 text-fresh-800 rounded-md px-3 py-2">
                             <span>{{ __('Coupon') }}: {{ $cart->coupon->code }}</span>
                             <button wire:click="removeCoupon" class="underline">{{ __('Remove') }}</button>
                         </div>
@@ -51,7 +51,7 @@
                     <dl class="space-y-2 text-sm">
                         <div class="flex justify-between"><dt class="text-gray-600">{{ __('Subtotal') }}</dt><dd>₹{{ number_format($totals['subtotal'], 2) }}</dd></div>
                         <div class="flex justify-between"><dt class="text-gray-600">{{ __('Tax') }}</dt><dd>₹{{ number_format($totals['tax_amount'], 2) }}</dd></div>
-                        <div class="flex justify-between"><dt class="text-gray-600">{{ __('Discount') }}</dt><dd class="text-emerald-700">−₹{{ number_format($totals['discount'], 2) }}</dd></div>
+                        <div class="flex justify-between"><dt class="text-gray-600">{{ __('Discount') }}</dt><dd class="text-brand-700">−₹{{ number_format($totals['discount'], 2) }}</dd></div>
                         <div class="flex justify-between text-xs text-gray-400"><dt>{{ __('Delivery') }}</dt><dd>{{ __('Calculated at checkout') }}</dd></div>
                     </dl>
 
@@ -60,7 +60,7 @@
                         <span>₹{{ number_format($totals['subtotal'] + $totals['tax_amount'] - $totals['discount'], 2) }}</span>
                     </div>
 
-                    <a href="{{ route('checkout.index') }}" wire:navigate class="mt-4 block text-center bg-emerald-700 hover:bg-emerald-800 text-white font-semibold py-2.5 rounded-md">
+                    <a href="{{ route('checkout.index') }}" wire:navigate class="mt-4 block text-center bg-fresh-600 hover:bg-fresh-700 text-white font-semibold py-2.5 rounded-md">
                         {{ __('Proceed to Checkout') }}
                     </a>
                 </div>

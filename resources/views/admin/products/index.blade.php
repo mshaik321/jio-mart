@@ -2,7 +2,7 @@
     <div class="flex justify-between items-center mb-4">
         <h2 class="text-lg font-semibold text-gray-900">Products</h2>
         @can('products.create')
-            <a href="{{ route('admin.products.create') }}" class="bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-semibold px-4 py-2 rounded-md">+ New Product</a>
+            <a href="{{ route('admin.products.create') }}" class="bg-fresh-600 hover:bg-fresh-700 text-white text-sm font-semibold px-4 py-2 rounded-md">+ New Product</a>
         @endcan
     </div>
 
@@ -25,7 +25,7 @@
                         <td class="px-4 py-2">{{ ucfirst($product->status->value) }}</td>
                         <td class="px-4 py-2 text-right space-x-2">
                             @can('products.update')
-                                <a href="{{ route('admin.products.edit', $product) }}" class="text-emerald-700 hover:underline">Edit</a>
+                                <a href="{{ route('admin.products.edit', $product) }}" class="text-brand-700 hover:underline">Edit</a>
                             @endcan
                             @can('products.delete')
                                 <form action="{{ route('admin.products.destroy', $product) }}" method="POST" class="inline" onsubmit="return confirm('Delete this product?');">

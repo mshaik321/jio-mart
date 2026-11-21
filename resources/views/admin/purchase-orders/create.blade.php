@@ -42,9 +42,9 @@
                     <input type="number" step="0.01" :name="`items[${index}][unit_cost]`" placeholder="Unit cost" class="rounded-md border-gray-300 text-sm" required>
                 </div>
             </template>
-            <button type="button" @click="rows.push(rows.length)" class="text-sm text-emerald-700 underline">+ Add another item</button>
+            <button type="button" @click="rows.push(rows.length)" class="text-sm text-brand-700 underline">+ Add another item</button>
         </div>
 
-        <button type="submit" class="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold px-4 py-2 rounded-md text-sm">Create Purchase Order</button>
+        <button type="submit" class="bg-fresh-600 hover:bg-fresh-700 text-white font-semibold px-4 py-2 rounded-md text-sm">Create Purchase Order</button>
     </form>
 </x-layouts.admin>

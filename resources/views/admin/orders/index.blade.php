@@ -25,7 +25,7 @@
                         <td class="px-4 py-2">{{ ucfirst($order->payment_status->value) }}</td>
                         <td class="px-4 py-2">{{ $order->status->label() }}</td>
                         <td class="px-4 py-2 text-right">
-                            <a href="{{ route('admin.orders.show', $order) }}" class="text-emerald-700 hover:underline">View</a>
+                            <a href="{{ route('admin.orders.show', $order) }}" class="text-brand-700 hover:underline">View</a>
                         </td>
                     </tr>
                 @endforeach

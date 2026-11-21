@@ -3,6 +3,6 @@
     <form action="{{ route('admin.products.store') }}" method="POST" class="bg-white border border-gray-200 rounded-lg p-5 space-y-4 max-w-3xl">
         @csrf
         @include('admin.products._form', ['product' => null])
-        <button type="submit" class="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold px-4 py-2 rounded-md text-sm">Create Product</button>
+        <button type="submit" class="bg-fresh-600 hover:bg-fresh-700 text-white font-semibold px-4 py-2 rounded-md text-sm">Create Product</button>
     </form>
 </x-layouts.admin>

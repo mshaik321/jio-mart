@@ -13,7 +13,7 @@
 
 <div class="group relative flex flex-col rounded-xl border border-gray-200 bg-white transition-shadow hover:shadow-md">
     @if($discount > 0)
-        <span class="absolute left-2 top-2 z-10 rounded-md bg-amber-400 px-1.5 py-0.5 text-[11px] font-bold text-emerald-950">{{ __(':percent% OFF', ['percent' => $discount]) }}</span>
+        <span class="absolute left-2 top-2 z-10 rounded-md bg-sun-300 px-1.5 py-0.5 text-[11px] font-bold text-gray-900">{{ __(':percent% OFF', ['percent' => $discount]) }}</span>
     @endif
 
     <a href="{{ route('products.show', $product->slug) }}" wire:navigate class="block p-3 sm:p-4">
@@ -24,7 +24,7 @@
                 <div class="flex h-full items-center justify-center text-sm text-gray-400">{{ __('No image') }}</div>
             @endif
         </div>
-        <h3 class="line-clamp-2 text-sm font-semibold leading-snug text-gray-900 group-hover:text-emerald-700">{{ $name }}</h3>
+        <h3 class="line-clamp-2 text-sm font-semibold leading-snug text-gray-900 group-hover:text-brand-800">{{ $name }}</h3>
         @if($alternateName)
             <p class="mt-0.5 line-clamp-1 text-xs text-gray-500">{{ $alternateName }}</p>
         @endif
@@ -45,7 +45,7 @@
                 {{ __('Out of stock') }}
             </button>
         @else
-            <p class="mb-2 text-xs font-medium {{ $stock <= 10 ? 'text-amber-600' : 'text-emerald-700' }}">
+            <p class="mb-2 text-xs font-medium {{ $stock <= 10 ? 'text-amber-600' : 'text-fresh-700' }}">
                 {{ $stock <= 10 ? __('Only :count left', ['count' => $stock]) : __('In stock') }}
             </p>
             <livewire:storefront.add-to-cart-button :variant="$variant" :key="'atc-'.$variant->id" />

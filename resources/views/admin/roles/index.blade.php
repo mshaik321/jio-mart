@@ -11,7 +11,7 @@
                         <td class="px-4 py-2 font-medium text-gray-900">{{ $role->name }}</td>
                         <td class="px-4 py-2 text-gray-500">{{ $role->permissions->count() }} permission(s)</td>
                         <td class="px-4 py-2 text-right">
-                            <a href="{{ route('admin.roles.edit', $role) }}" class="text-emerald-700 hover:underline">Edit Permissions</a>
+                            <a href="{{ route('admin.roles.edit', $role) }}" class="text-brand-700 hover:underline">Edit Permissions</a>
                         </td>
                     </tr>
                 @endforeach

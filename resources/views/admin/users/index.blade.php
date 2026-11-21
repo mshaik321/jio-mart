@@ -2,7 +2,7 @@
     <div class="flex justify-between items-center mb-4">
         <h2 class="text-lg font-semibold text-gray-900">Users</h2>
         @can('users.manage')
-            <a href="{{ route('admin.users.create') }}" class="bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-semibold px-4 py-2 rounded-md">+ New Staff User</a>
+            <a href="{{ route('admin.users.create') }}" class="bg-fresh-600 hover:bg-fresh-700 text-white text-sm font-semibold px-4 py-2 rounded-md">+ New Staff User</a>
         @endcan
     </div>
 
@@ -24,7 +24,7 @@
                         <td class="px-4 py-2">{{ $user->is_active ? 'Yes' : 'No' }}</td>
                         <td class="px-4 py-2 text-right">
                             @can('users.manage')
-                                <a href="{{ route('admin.users.edit', $user) }}" class="text-emerald-700 hover:underline">Edit</a>
+                                <a href="{{ route('admin.users.edit', $user) }}" class="text-brand-700 hover:underline">Edit</a>
                             @endcan
                         </td>
                     </tr>
