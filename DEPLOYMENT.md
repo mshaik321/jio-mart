@@ -1,6 +1,6 @@
 # Deployment
 
-## Current status: deployed and live (latest release e92c158, 2026-10-06)
+## Current status: deployed and live (latest release db7f674, 2026-11-21)
 
 **https://shop.allsoft.online** — deployed, HTTPS working, smoke-tested end to end against the live MySQL database.
 
@@ -108,7 +108,7 @@ Two production-only bugs were found and fixed during this process — see the co
 - **Admin panel and storefront flows were not driven through a browser on production.** The pages render (HTTP 200) and the same code paths are covered by 74 passing automated tests plus the live API order above, but no human/browser click-through of admin CRUD or the Livewire checkout UI has happened against production.
 - Responsive layout checked on production only in an emulated phone viewport (headless Chrome at 360/375 px, see hotfix b0f2448), not on a real device.
 - Mail is `MAIL_MAILER=log` — password reset and email verification emails are written to the log, not delivered. Needs real SMTP credentials to function.
-- The new catalog was seeded **without stock** (owner's choice), so every product shows "Out of stock" until real stock is added in Admin → Inventory or via purchase orders.
+- The new catalog was seeded **without stock** (owner's choice). On 2026-11-20, at the owner's request, every active variant (147 across the 129 active products) got 100 units of opening stock in `WH-0001`, recorded as `adjustment` movements noted "Opening stock", each with an `inventory.adjusted` audit entry. These are placeholder quantities, not a physical count. Correct them in Admin → Inventory. A second Super Admin account was created at the same time (credentials given to the owner, not recorded here). DB backup taken first: `~/backups/groceryhub-db-pre-stock-20261120-223714.sql.gz`.
 
 ## Release e92c158: customer auth + bilingual catalog (deployed 2026-10-06)
 
@@ -136,9 +136,21 @@ On phones the admin sidebar was hidden with no way to open it, the storefront's 
 
 **Rollback:** `tar xzf ~/backups/groceryhub-pre-b0f2448-20261119-193951.tgz -C /home2/innovx5x/shop.allsoft.online && php artisan optimize`.
 
+### Release db7f674 (deployed 2026-11-21 19:07)
+
+Fast-forward merge of `feature/remove-email-verification` (5 commits): email verification is no longer required for customer or admin pages, Google sign-in routes are disabled, a blue/yellow/green theme, four shop sections (three "coming soon"), and admin, returns, delivery, settings and role-audit fixes. No migrations and no dependency changes; one new config file (`config/storefront.php`) and a Tailwind theme change, so `public/build` was rebuilt.
+
+Before deploy: the full suite passed locally (170 tests: 155 passed, 15 skipped, all of them `GoogleLoginTest`, which the branch skips because Google sign-in is disabled), plus a local browser check and a scripted registration that reached My Orders with no verification step. The server's copies of the 105 modified files were checksum-verified identical to `70fabe4`, and none of the 10 new files existed yet.
+
+Deployed with `php artisan down`, a tar of the 115 changed files plus `public/build`, `php artisan optimize`, `php artisan up`. Backup: `~/backups/groceryhub-pre-db7f674-20261121-190618.tgz` (the 105 modified files, the previous `public/build`, and `bootstrap/cache`). Verified on production: all 116 shipped files match the commit by checksum; maintenance mode off; home, login, register, `/up`, the three section pages and the manifest return 200 with the new CSS; `route:list` shows no route requiring `verified`; scripted logins as a Super Admin (admin dashboard, products, orders, users, delivery zones, reports, settings) and as a customer (orders, addresses, wishlist, cart, checkout, account) all return 200; 375 px screenshots show the new theme and the admin menu drawer.
+
+**Rollback:** `php artisan down`; `tar xzf ~/backups/groceryhub-pre-db7f674-20261121-190618.tgz -C /home2/innovx5x/shop.allsoft.online`; remove the 10 files the release added (`git diff --name-status 70fabe4 db7f674 | grep ^A`: `SectionController.php`, `config/storefront.php`, `resources/views/storefront/sections/coming-soon.blade.php`, `E2E_TEST_PLAN.md` and six test files); `php artisan optimize && php artisan up`.
+
 ## Google sign-in ("Continue with Google")
 
-Only credentials are missing; code, routes, config and tests are done.
+**Disabled in code since release db7f674:** the `auth/google/*` routes are commented out in `routes/auth.php` and the button is removed from the login and register views. To turn it back on, restore those routes and the `<x-google-auth-button />` include, un-skip `GoogleLoginTest`, then add the credentials below.
+
+Apart from that, only credentials are missing; code, config and tests are done.
 
 1. Google Cloud Console → **APIs & Services → OAuth consent screen**: user type *External*; app name *GroceryHub*; support email; authorised domain `allsoft.online`; scopes `openid`, `email`, `profile` (non-sensitive, so no Google verification review is needed); publish the app ("In production") so any Google user can sign in.
 2. **APIs & Services → Credentials → Create credentials → OAuth client ID** → *Web application*.
