@@ -68,6 +68,8 @@ class DeliveryZoneController extends Controller
             'is_active' => ['nullable', 'boolean'],
         ]);
 
+        // An unchecked "Active" box isn't submitted; treat its absence as false so records can be deactivated.
+        $data['is_active'] = $request->boolean('is_active');
         $data['pincodes'] = array_values(array_filter(array_map('trim', explode(',', $data['pincodes']))));
 
         return $data;

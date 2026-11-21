@@ -96,7 +96,7 @@ class LocalizationTest extends TestCase
         $this->withSession(['locale' => 'te'])
             ->get('/login')
             ->assertOk()
-            ->assertSee('Google తో కొనసాగండి')
+            ->assertDontSee('Google తో కొనసాగండి')
             ->assertSee('పాస్‌వర్డ్ మర్చిపోయారా?')
             ->assertSee('ఖాతా సృష్టించండి');
     }

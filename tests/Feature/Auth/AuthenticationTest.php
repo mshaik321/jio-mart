@@ -84,12 +84,11 @@ class AuthenticationTest extends TestCase
         $this->assertGuest();
     }
 
-    public function test_login_screen_offers_google_forgot_password_and_registration(): void
+    public function test_login_screen_offers_forgot_password_and_registration(): void
     {
         $this->get('/login')
             ->assertOk()
-            ->assertSee('Continue with Google')
-            ->assertSee(route('auth.google.redirect'))
+            ->assertDontSee('Continue with Google')
             ->assertSee(route('password.request'))
             ->assertSee(route('register'));
     }

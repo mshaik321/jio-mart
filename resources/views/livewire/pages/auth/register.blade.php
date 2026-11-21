@@ -3,7 +3,6 @@
 use App\Models\Customer;
 use App\Models\User;
 use App\Support\PhoneNumber;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -90,8 +89,6 @@ new #[Layout('layouts.guest')] class extends Component
             return $user;
         });
 
-        event(new Registered($user));
-
         Auth::login($user);
         Session::regenerate();
 
@@ -131,7 +128,6 @@ new #[Layout('layouts.guest')] class extends Component
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">{{ __('Fresh groceries, delivered to your doorstep.') }}</p>
     </div>
 
-    <x-google-auth-button :divider="__('or register with email')" />
 
     <form wire:submit="register" class="space-y-4">
         <!-- Name -->

@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
@@ -18,13 +17,10 @@ Route::middleware('guest')->group(function () {
     Volt::route('reset-password/{token}', 'pages.auth.reset-password')
         ->name('password.reset');
 
-    Route::middleware('throttle:10,1')->group(function () {
-        Route::get('auth/google/redirect', [GoogleController::class, 'redirect'])
-            ->name('auth.google.redirect');
-
-        Route::get('auth/google/callback', [GoogleController::class, 'callback'])
-            ->name('auth.google.callback');
-    });
+    // Google sign-in is disabled for now. To re-enable, restore:
+    // Route::get('auth/google/redirect', [GoogleController::class, 'redirect'])->name('auth.google.redirect');
+    // Route::get('auth/google/callback', [GoogleController::class, 'callback'])->name('auth.google.callback');
+    // (and add <x-google-auth-button /> back to the login/register views)
 });
 
 Route::middleware('auth')->group(function () {

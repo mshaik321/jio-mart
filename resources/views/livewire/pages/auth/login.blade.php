@@ -46,7 +46,6 @@ new #[Layout('layouts.guest')] class extends Component
         </div>
     @endif
 
-    <x-google-auth-button />
 
     <form wire:submit="login" class="space-y-4">
         <!-- Email Address -->

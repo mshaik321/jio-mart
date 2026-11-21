@@ -82,7 +82,7 @@ class UserController extends Controller
 
         $oldRoles = $user->roles->pluck('name')->all();
         $user->syncRoles($data['roles'] ?? []);
-        $user->update(['is_active' => $data['is_active'] ?? false]);
+        $user->forceFill(['is_active' => $request->boolean('is_active')])->save();
 
         $this->auditLog->log($request->user(), 'user.permissions_changed', $user, ['roles' => $oldRoles], ['roles' => $data['roles'] ?? []]);
 

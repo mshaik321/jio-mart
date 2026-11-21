@@ -6,6 +6,7 @@ use App\Models\User;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Livewire\Features\SupportTesting\Testable;
 use Livewire\Volt\Volt;
 use Tests\TestCase;
@@ -43,7 +44,7 @@ class RegistrationTest extends TestCase
         $response
             ->assertOk()
             ->assertSeeVolt('pages.auth.register')
-            ->assertSee('Continue with Google')
+            ->assertDontSee('Continue with Google')
             ->assertSee('Mobile number')
             ->assertSee('Confirm Password');
     }
@@ -65,6 +66,21 @@ class RegistrationTest extends TestCase
         $this->assertNotSame('password', $user->password);
         $this->assertTrue($user->hasRole('Customer'));
         $this->assertNotNull($user->customer);
+    }
+
+    public function test_newly_registered_users_can_reach_checkout_and_orders_without_verifying_email(): void
+    {
+        $this->seed(RolesAndPermissionsSeeder::class);
+        Notification::fake();
+
+        $this->fillForm()->call('register');
+
+        $user = User::where('email', 'test@example.com')->firstOrFail();
+        $this->assertNull($user->email_verified_at);
+        Notification::assertNothingSent();
+
+        $this->actingAs($user)->get(route('checkout.index'))->assertOk();
+        $this->actingAs($user)->get(route('orders.index'))->assertOk();
     }
 
     public function test_registration_normalises_email_and_mobile_number(): void

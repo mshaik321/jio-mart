@@ -20,13 +20,13 @@ Route::get('/search', [SearchController::class, 'index'])->name('search');
 Route::get('/categories/{category:slug}', [CategoryController::class, 'show'])->name('categories.show');
 Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
 Route::post('/products/{product:slug}/reviews', [ReviewController::class, 'store'])
-    ->middleware(['auth', 'verified', 'customer'])
+    ->middleware(['auth', 'customer'])
     ->name('products.reviews.store');
 
 Route::get('/cart', CartPage::class)->name('cart.index');
 Route::get('/wishlist', WishlistPage::class)->name('wishlist.index');
 
-Route::middleware(['auth', 'verified', 'customer'])->group(function () {
+Route::middleware(['auth', 'customer'])->group(function () {
     Route::get('/checkout', CheckoutPage::class)->name('checkout.index');
 
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
@@ -39,7 +39,7 @@ Route::middleware(['auth', 'verified', 'customer'])->group(function () {
 });
 
 Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
+    ->middleware(['auth'])
     ->name('dashboard');
 
 Route::view('profile', 'profile')

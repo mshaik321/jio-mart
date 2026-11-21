@@ -14,6 +14,7 @@ use Laravel\Socialite\Two\User as GoogleUser;
 use RuntimeException;
 use Tests\TestCase;
 
+/** Google sign-in is disabled for now (routes + buttons removed); un-skip when re-enabled. */
 class GoogleLoginTest extends TestCase
 {
     use RefreshDatabase;
@@ -21,6 +22,8 @@ class GoogleLoginTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->markTestSkipped('Google sign-in is disabled for now.');
 
         config([
             'services.google.client_id' => 'test-client-id.apps.googleusercontent.com',

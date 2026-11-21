@@ -60,12 +60,17 @@ class DeliverySlotController extends Controller
 
     private function validated(Request $request): array
     {
-        return $request->validate([
+        $data = $request->validate([
             'name' => ['required', 'string', 'max:100'],
             'start_time' => ['required'],
             'end_time' => ['required'],
             'max_orders' => ['required', 'integer', 'min:1'],
             'is_active' => ['nullable', 'boolean'],
         ]);
+
+        // An unchecked "Active" box isn't submitted; treat its absence as false so records can be deactivated.
+        $data['is_active'] = $request->boolean('is_active');
+
+        return $data;
     }
 }

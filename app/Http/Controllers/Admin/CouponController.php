@@ -64,7 +64,7 @@ class CouponController extends Controller
 
     private function validated(Request $request): array
     {
-        return $request->validate([
+        $data = $request->validate([
             'code' => ['required', 'string', 'max:50', 'unique:coupons,code,'.($request->route('coupon')?->id ?? 'NULL')],
             'type' => ['required', 'in:percentage,fixed'],
             'value' => ['required', 'numeric', 'min:0'],
@@ -76,5 +76,10 @@ class CouponController extends Controller
             'per_customer_limit' => ['nullable', 'integer', 'min:1'],
             'is_active' => ['nullable', 'boolean'],
         ]);
+
+        // An unchecked "Active" box isn't submitted; treat its absence as false so coupons can be deactivated.
+        $data['is_active'] = $request->boolean('is_active');
+
+        return $data;
     }
 }

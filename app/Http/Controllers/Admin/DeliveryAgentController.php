@@ -60,12 +60,17 @@ class DeliveryAgentController extends Controller
 
     private function validated(Request $request): array
     {
-        return $request->validate([
+        $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:20'],
             'vehicle_type' => ['nullable', 'string', 'max:50'],
             'vehicle_number' => ['nullable', 'string', 'max:50'],
             'is_active' => ['nullable', 'boolean'],
         ]);
+
+        // An unchecked "Active" box isn't submitted; treat its absence as false so records can be deactivated.
+        $data['is_active'] = $request->boolean('is_active');
+
+        return $data;
     }
 }
