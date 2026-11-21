@@ -87,18 +87,35 @@
                     </div>
                 </div>
 
-                @if($navCategories->isNotEmpty())
-                    <nav class="bg-emerald-800/90" aria-label="{{ __('Categories') }}">
-                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-1 overflow-x-auto whitespace-nowrap py-2 text-sm [scrollbar-width:none]">
-                            @foreach($navCategories as $navCategory)
-                                <a href="{{ route('categories.show', $navCategory->slug) }}" wire:navigate
-                                    class="rounded-full px-3 py-1 {{ request()->route('category')?->is($navCategory) ? 'bg-white text-emerald-800 font-semibold' : 'text-emerald-50 hover:bg-emerald-700' }}">
-                                    {{ $navCategory->translated('name') }}
-                                </a>
-                            @endforeach
-                        </div>
-                    </nav>
-                @endif
+                @php($activeSection = $section ?? 'groceries')
+
+            <nav class="bg-brand-800" aria-label="{{ __('Shop sections') }}">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-1 overflow-x-auto whitespace-nowrap py-2 text-sm [scrollbar-width:none]">
+                    @foreach(config('storefront.sections') as $sectionKey => $sectionItem)
+                        <a href="{{ route($sectionItem['route']) }}" wire:navigate
+                            @if($activeSection === $sectionKey) aria-current="page" @endif
+                            class="inline-flex items-center gap-2 rounded-md px-3.5 py-1.5 font-semibold {{ $activeSection === $sectionKey ? 'bg-sun-300 text-brand-900' : 'text-white hover:bg-brand-700' }}">
+                            {{ __($sectionItem['label']) }}
+                            @unless($sectionItem['live'])
+                                <span class="rounded-full bg-fresh-500 px-1.5 py-0.5 text-[10px] font-bold uppercase leading-none text-white">{{ __('Soon') }}</span>
+                            @endunless
+                        </a>
+                    @endforeach
+                </div>
+            </nav>
+
+            @if($activeSection === 'groceries' && $navCategories->isNotEmpty())
+                <nav class="bg-white border-b border-gray-200" aria-label="{{ __('Categories') }}">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-1 overflow-x-auto whitespace-nowrap py-2 text-sm [scrollbar-width:none]">
+                        @foreach($navCategories as $navCategory)
+                            <a href="{{ route('categories.show', $navCategory->slug) }}" wire:navigate
+                                class="rounded-full px-3 py-1 {{ request()->route('category')?->is($navCategory) ? 'bg-sun-300 text-brand-900 font-semibold' : 'text-gray-700 hover:bg-sun-100' }}">
+                                {{ $navCategory->translated('name') }}
+                            </a>
+                        @endforeach
+                    </div>
+                </nav>
+            @endif
             </header>
 
             <main class="flex-1">
@@ -114,6 +131,11 @@
                     </div>
                     <div>
                         <p class="font-semibold text-white mb-2">{{ __('Shop') }}</p>
+                        <ul class="space-y-1 mb-4">
+                            @foreach(config('storefront.sections') as $footerSection)
+                                <li><a href="{{ route($footerSection['route']) }}" wire:navigate class="hover:text-white">{{ __($footerSection['label']) }}</a></li>
+                            @endforeach
+                        </ul>
                         <ul class="space-y-1">
                             @foreach($navCategories->take(6) as $footerCategory)
                                 <li><a href="{{ route('categories.show', $footerCategory->slug) }}" wire:navigate class="hover:text-white">{{ $footerCategory->translated('name') }}</a></li>

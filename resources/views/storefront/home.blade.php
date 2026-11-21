@@ -20,6 +20,23 @@
         </div>
     </section>
 
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <h2 class="sr-only">{{ __('Shop sections') }}</h2>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            @foreach(config('storefront.sections') as $sectionKey => $sectionItem)
+                @php($tone = ['groceries' => 'bg-fresh-100 text-fresh-800', 'housekeeping' => 'bg-brand-100 text-brand-800', 'food' => 'bg-sun-200 text-sun-900', 'medicines' => 'bg-rose-100 text-rose-800'][$sectionKey])
+                <a href="{{ route($sectionItem['route']) }}" wire:navigate class="group relative rounded-xl border border-gray-200 bg-white p-4 transition-shadow hover:shadow-md">
+                    @unless($sectionItem['live'])
+                        <span class="absolute right-3 top-3 rounded-full bg-sun-300 px-2 py-0.5 text-[10px] font-bold uppercase text-brand-900">{{ __('Soon') }}</span>
+                    @endunless
+                    <span class="flex h-11 w-11 items-center justify-center rounded-lg text-lg font-bold {{ $tone }}">{{ mb_substr(__($sectionItem['short']), 0, 1) }}</span>
+                    <p class="mt-3 font-bold leading-tight text-gray-900 group-hover:text-brand-700">{{ __($sectionItem['label']) }}</p>
+                    <p class="mt-1 text-xs text-gray-500 line-clamp-2">{{ __($sectionItem['blurb']) }}</p>
+                </a>
+            @endforeach
+        </div>
+    </div>
+
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
         @if($categories->isNotEmpty())
             <section aria-labelledby="shop-by-category">

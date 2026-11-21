@@ -8,6 +8,7 @@ use App\Http\Controllers\Storefront\OrderController;
 use App\Http\Controllers\Storefront\ProductController;
 use App\Http\Controllers\Storefront\ReviewController;
 use App\Http\Controllers\Storefront\SearchController;
+use App\Http\Controllers\Storefront\SectionController;
 use App\Livewire\Actions\Logout;
 use App\Livewire\Storefront\CartPage;
 use App\Livewire\Storefront\CheckoutPage;
@@ -16,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/language/{locale}', [LocaleController::class, 'update'])->name('locale.update');
+Route::get('/housekeeping', [SectionController::class, 'housekeeping'])->name('sections.housekeeping');
+Route::get('/food-delivery', [SectionController::class, 'food'])->name('sections.food');
+Route::get('/medicines', [SectionController::class, 'medicines'])->name('sections.medicines');
 Route::get('/search', [SearchController::class, 'index'])->name('search');
 Route::get('/categories/{category:slug}', [CategoryController::class, 'show'])->name('categories.show');
 Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
